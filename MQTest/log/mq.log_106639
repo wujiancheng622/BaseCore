@@ -1,0 +1,16 @@
+05-05-17 13:59:15,660.602 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqThreadPool.cpp:25] -  - 开始创建activemq线程池!
+05-05-17 13:59:15,661.378 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqThreadPool.cpp:36] -  - 线程池初始化成功!
+05-05-17 13:59:15,661.430 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqAPI.cpp:76] -  - 开始实例化ActivemqProducer对象!
+05-05-17 13:59:15,679.654 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqProducer.cpp:72] -  - 创建mq连接成功!
+05-05-17 13:59:15,680.002 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqProducer.cpp:87] -  - 创建mq连接会话成功!
+05-05-17 13:59:15,680.041 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqProducer.cpp:102] -  - 创建mq目的地成功!
+05-05-17 13:59:15,681.945 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqProducer.cpp:111] -  - 创建mq消息生产者成功!
+05-05-17 13:59:15,681.982 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqAPI.cpp:89] -  - 实例化ActivemqProducer对象成功!
+05-05-17 13:59:15,682.004 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqAPI.cpp:41] -  - 开始实例化ActivemqConsumer对象!
+05-05-17 13:59:15,682.072 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:120] -  - 创建连接工厂成功!
+05-05-17 13:59:15,683.384 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:133] -  - 创建连接成功!
+05-05-17 13:59:15,683.419 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:142] -  - 创建mq连接成功!
+05-05-17 13:59:15,692.247 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:157] -  - 创建会话成功!
+05-05-17 13:59:15,692.285 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:169] -  - 创建mq目的地成功!
+05-05-17 13:59:15,694.957 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqConsumer.cpp:178] -  - 创建消息消费者成功!
+05-05-17 13:59:15,694.991 [139830225692704] INFO  log [/home/src-hpct-Depend/src/lib_argesActivemq/src/ActivemqAPI.cpp:55] -  - 实例化ActivemqConsumer对象成功!

@@ -1,0 +1,118 @@
+#
+# Makefile.template
+#
+# Version : 1.2
+
+
+##########################################################
+#### User Makefile example for how to use this template
+
+# while use this template, define the following value, 
+# and include this template
+
+# # target, one of LIB_TARGET / DLL_TARGET / EXE_TARGET
+# LIB_TARGET = libdsl.a
+
+# # source file (C++/C)
+# SRCS += \
+#	$(wildcard *.cpp) \
+#	$(wildcard cpp_sub_dir/*.cpp) \
+#	$(wildcard c_sub_dir/*.c ) \
+
+# # compile flag
+# CFLAGS += -g -pipe -Wall
+# CFLAGS += \
+#	-I.. \
+
+# # link flag
+# LDFLAGS +=
+
+# # include template
+# TOP_DIR?=..
+# include $(TOP_DIR)/Makefile.template
+
+
+#########################################################
+#### example to run make
+
+# common build (release) , just run " make "
+#
+# debug mode, disable optimize, run " make D=1 "
+# 
+# cross compile, compiler is /path/to/sh4-unknown-linux-g++
+# then run " make CROSS=/path/to/sh4-unknown-linux- "
+#
+# if want to use llvm as compiler,
+# then run " make GCC=/path/to/clang GXX=/path/to/clang++ "
+
+
+#########################################################
+#### Makefile.template content
+
+# <1> some flag
+# debug flag, use " make D=1 " to enable debug mode
+D?=0
+# cross compile flag, use " make CROSS=/path/to/sh4-unknown-linux- " 
+CROSS?=
+# MAC Module , use "make MAC=1" to compile MAC mode
+#MAC?=0
+
+# <2> some value define
+OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp,$(SRCS)))
+OBJS += $(patsubst %.c, %.o, $(filter %.c,$(SRCS)))
+DEPS += $(patsubst %.o, %.d~, $(OBJS))
+
+GCC=$(CROSS)gcc
+GXX=$(CROSS)g++
+AR=$(CROSS)ar
+
+ifeq ($(D),0)
+CFLAGS += -O2 -fno-strict-aliasing
+else
+FN_D=_d
+endif
+
+#ifeq ($(MAC),1)
+#CFLAGS += -DMAC -arch i386
+#LDFLAGS += -arch i386
+#endif
+
+ifdef DLL_TARGET
+CFLAGS += -DPIC -fPIC
+endif
+
+# <3> target rule
+.PHONY : all clean
+
+all : $(LIB_TARGET) $(DLL_TARGET) $(EXE_TARGET)
+
+clean :
+	rm -f $(LIB_TARGET) $(DLL_TARGET) $(EXE_TARGET) $(OBJS) $(DEPS)
+
+ifdef LIB_TARGET
+$(LIB_TARGET) : $(OBJS)
+	$(AR) crvs $(LIB_TARGET) $(OBJS)
+	rm -rf $(OBJS)
+endif
+
+ifdef DLL_TARGET
+$(DLL_TARGET) : $(OBJS)
+	$(GXX) -shared -rdynamic $(CFLAGS) -o $(DLL_TARGET) $(OBJS) $(LDFLAGS)
+endif
+
+ifdef EXE_TARGET
+$(EXE_TARGET) : $(OBJS)
+	$(GXX) $(CFLAGS) -o $(EXE_TARGET) $(OBJS) $(LDFLAGS)
+endif
+
+
+.SUFFIXES : .cpp .c
+
+.cpp.o :
+	$(GXX) $(CFLAGS) -MMD -MF $*.d~ -c -o $@ $<
+
+.c.o :
+	$(GCC) $(CFLAGS) -MMD -MF $*.d~ -c -o $@ $<
+
+-include $(DEPS)
+

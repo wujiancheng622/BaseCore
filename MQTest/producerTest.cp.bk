@@ -1,0 +1,136 @@
+#include <iostream>
+#include <string>
+#include <unistd.h>
+#include <fstream>
+#include "ActivemqParseMessage.h"
+#include "ActivemqAPI.h"
+#include "MqLog.h"
+#include "ParamMessageBean.pb.h"
+#include "DataType.pb.h"
+#include "ModuleType.pb.h"
+#include "DataType.pb.h"
+#include "DataDistributeBean.pb.h"
+#include "GateBlackWhiteDataBean.pb.h"
+#include "VerifyInfoReportBean.pb.h"
+#include "Message.pb.h"
+#include "RaiseDustDataBean.pb.h"
+
+
+using namespace  std;
+
+using namespace cms;
+using namespace com::arges::file::proto;
+
+
+
+std::string GetParamMessage(int model,int type,int srcModel,std::string content,std::string brokerUrl="",std::string destUrl="",int code=1,std::string doman="1",std::string sessionId="1")
+{
+	ParamMessage paramMessage;
+	paramMessage.set_model(model);
+	paramMessage.set_type(type);
+	paramMessage.set_srcmodule(srcModel);
+	paramMessage.set_content(content);
+	paramMessage.set_code(code);
+	paramMessage.set_brokerurl(brokerUrl);
+	paramMessage.set_desturl(destUrl);
+	paramMessage.set_sessionid(sessionId);
+	std::string message;
+	paramMessage.SerializeToString(&message);
+	return message;
+}
+
+
+int _ParseMessageFromMq(std::string& str)
+{
+	printf("_ParseMessageFromMq\n");
+
+	ParamMessage paramMessage;
+	bool ret=paramMessage.ParseFromString(str);
+	int nSrcModel=paramMessage.srcmodule();
+	int nModel=paramMessage.model();
+	int nType=paramMessage.type();
+
+	printf("\n nType:%0x  \n",nType);
+
+	//DataDistribute data;
+	//data.ParseFromString(paramMessage.content());
+
+	//GateBlackWhiteDataList dd;
+	//dd.ParseFromString(data.content());
+
+
+	//for (int i=0;i<dd.data_size();++i)
+	//{
+	//	const GateBlackWhiteData &tmp= dd.data(nModel);
+
+	//	printf("id:%s %s \n\n", tmp.identityid().c_str(),tmp.wristid().c_str());
+	//}
+	//
+
+	//printf("\n id:%s  type :%d \n",data.devid().c_str(),data.datatype());
+
+	return 0;
+}
+
+
+
+
+
+
+
+int main()
+{
+
+	int ret=hlog_init();
+	if (ret!=RET_OK)
+	{
+		//打印输出提示初始化hlog库失败
+		exit(0);
+	}
+
+	ret=_CreateMqLog();
+	if (ret!=RET_OK)
+	{
+		//打印输出提示实例化log对象失败
+		hlog_uninit();
+		exit(0);
+	}
+
+	ret=_InitMq();
+	if (ret!=RET_OK)
+	{
+		//打印输出提示初始化mq库失败
+		hlog_uninit();
+		exit(0);
+	}
+
+	//	初始化线程池
+	InitThreadPoolByActivemq(200, 200, 10000);
+
+
+	printf("run here\n");
+	//ActivemqProducer *m_pETSProducer=_CreateActivemqProducer("failover://tcp://192.168.3.170:61616?connection.sendTimeout=1000","QUEUE_TMS" );//192.168.3.136
+
+	ActivemqConsumer *m_pETSConsumer=_CreateActivemqConsumer("failover://tcp://192.168.1.76:61616?connection.sendTimeout=1000","FaceServer_ETS_MessageTest" );//192.168.3.136
+    
+	//
+	//printf("run here 2\n");
+	//RaisuDustNoiseThreshold data;
+	//data.set_devicecode("1000442");
+	//data.set_value(80);
+	//string content;
+	//data.SerializeToString(&content);
+	//string strMessage=GetParamMessage(C_TMS_SERVER,100,C_ETS_SERVER,content);
+	//
+	//printf("run here 3\n");
+	//_SendBytesMessage(m_pETSProducer,strMessage);
+	//printf("run here 4\n");
+	while(true)
+	{
+		//int ret=_SendBytesMessage(m_pETSProducer,strMessage);
+		sleep(1);
+		//printf(" send \n");
+	}
+	return 0;
+
+}

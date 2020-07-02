@@ -1,0 +1,13 @@
+Depend\argesActivemq\X86_64\lib
+Depend\argeslog4cplus\X86_64\lib
+Depend\protobuf\X86_64\lib
+Depend\BaseCore\Proto\Lib
+Depend\Boost\X86_64\lib\libboost_thread.so.1.61.0
+Depend\Boost\X86_64\lib\libboost_thread.so
+Depend\Boost\X86_64\lib\libboost_system.so.1.61.0
+Depend\Boost\X86_64\lib\libboost_system.so
+Depend\BaseCore\Network
+Depend\BaseCore\Threads
+Depend\DssBaseLib\libdslalien_bit64.so
+Depend\DssBaseLib\libdsl_bit64.so
+Depend\HM_SDK

@@ -1,0 +1,190 @@
+#include <cstdio>
+#include <iostream>
+#include <string.h>
+#include <vector>
+#include "TcpServerModel.h"
+
+
+
+#include "DataType.pb.h"
+#include "DevInfoListBean.pb.h"
+#include "DataDistributeBean.pb.h"
+#include "ModuleType.pb.h"
+#include "ParamMessageBean.pb.h"
+#include "LinkDevAndServiceBean.pb.h"
+#include "GateBlackWhiteDataBean.pb.h"
+#include "SignInDataBean.pb.h"
+using namespace com::arges::file::proto;  
+
+using namespace std;
+
+using namespace BaseCore::Net;
+
+
+
+
+std::string GetParamMessage(int model,int type,int srcModel,std::string content,std::string brokerUrl="",std::string destUrl="",int code=1,std::string doman="1",std::string sessionId="1")
+{
+	ParamMessage paramMessage;
+	paramMessage.set_model(model);
+	paramMessage.set_type(type);
+	paramMessage.set_srcmodule(srcModel);
+	paramMessage.set_content(content);
+	paramMessage.set_code(code);
+	paramMessage.set_brokerurl(brokerUrl);
+	paramMessage.set_desturl(destUrl);
+	paramMessage.set_sessionid(sessionId);
+	std::string message;
+	paramMessage.SerializeToString(&message);
+	return message;
+}
+
+class ServerTest:public NetSdkListener
+{
+public:
+	ServerTest()
+	{
+		m_pSer=new TcpServer(this);
+	}
+
+
+	int Start(char * ip,int nPort)
+	{
+		m_pSer->SetPackageHeaderTrailer("GATE_DATA_BEGIN",strlen("GATE_DATA_BEGIN"),"GATE_DATA_END",strlen("GATE_DATA_END"));
+		return m_pSer->Start(ip, nPort);//192.168.1.178
+	}
+
+
+	int Stop()
+	{
+		m_pSer->Stop();
+		//delete m_pSer;
+		//m_pSer=NULL;
+		return 0;
+	}
+
+	int OnData( const char * pBuffer, int len, int hSocket)
+	{
+		static int num=0;
+		static int total=0;
+		total+=len;
+		printf("\n OnData len:%d  num:%d total:%d \n",len,++num,total);
+		return 0;
+	}
+
+	void OnClose( int hSocket, int error )
+	{
+		printf("\n OnClose handle:%d \n",hSocket);
+	}
+
+
+	bool OnAccept(int newClient, const char * remoteAddr, int remotePort)
+	{
+		printf("client ip:%s port:%d connected  now refuse it\n",remoteAddr,remotePort);
+
+		return true;
+
+		RspDeviceInfoListForDistribution InfoList;
+		DeviceInfo*  pDevinfo=InfoList.add_devs();
+
+		pDevinfo->set_devid("100001");
+		pDevinfo->set_provider("SHENSI");
+		pDevinfo->set_model("GATE");
+		pDevinfo->set_devip("192.168.3.240");
+		pDevinfo->set_devport(6811);
+		pDevinfo->set_username("admin");
+		pDevinfo->set_userpsw("admin");
+
+		string content;
+		InfoList.SerializeToString(&content);
+
+		string strMessage=GetParamMessage(C_BPX_SERVER,REQ_ADDDEV_TO_BPX,C_DMS_SERVER,content);
+
+		int ret=m_pSer->SendData(strMessage.c_str(),strMessage.length(),newClient);
+		printf("\nsend ret:%d \n",ret);
+
+
+		//Sleep(5);
+		//DataDistribute distributedata;
+		//distributedata.set_devid("100001");
+		//distributedata.set_datatype(1);
+		//distributedata.set_content(content);
+
+		//distributedata.SerializeToString(&content);
+
+		//strMessage=GetParamMessage(C_BPX_SERVER,REQ_BPX_DATA_DISTRIBUTE,C_DMS_SERVER,content);
+		//ret=m_pSer->SendData(strMessage.c_str(),strMessage.length(),newClient);
+		//printf("\nsend ret:%d \n",ret);
+		return true;
+
+		sleep(10);
+		InfoList.SerializeToString(&content);
+		strMessage=GetParamMessage(C_BPX_SERVER,REQ_DELDEV_TO_BPX,C_DMS_SERVER,content);
+
+		ret=m_pSer->SendData(strMessage.c_str(),strMessage.length(),newClient);
+		printf("\nsend ret:%d \n",ret);
+
+
+		return true;
+	}
+
+
+private:
+	TcpServer *m_pSer;	
+};
+
+int main()
+{	
+
+
+/*
+	WhiteUserMassageTest data;
+	{
+		FILE*fp=NULL;
+		fp=fopen("wwwww.txt","rb");
+		fseek(fp,0L,SEEK_END);
+		int flen=ftell(fp); 
+		char *  p=(char *)malloc(flen+1); 
+		if (p==NULL)
+		{
+			fclose(fp);
+			return 0;
+		}
+
+		fseek(fp,0L,SEEK_SET); 
+		fread(p,flen,1,fp); 
+		p[flen]=0; 
+
+
+		string blackWhiteData;
+		for ( int i=0;i<flen;++i)
+		{
+			blackWhiteData.push_back(p[i]);
+		}
+		data.ParseFromString(blackWhiteData);
+
+
+		printf("\n requestType :%d  requestType:%d  \n",data.result(),data.requesttype());
+
+		for (int i=0;i<data.users_size();++i)
+		{
+			WristUserName us=data.users(i);
+			printf("\nmac :%s        wristusername:%s \n",us.wristmac().c_str(),us.wristusername().c_str());
+		}
+		
+	}
+
+
+*/
+
+	ServerTest bser;
+	int ret=bser.Start("192.168.3.173",6811);
+
+	while(true)
+	{
+		//printf("\n wait \n");
+		sleep(10000);
+	}
+
+	return 0;
+}

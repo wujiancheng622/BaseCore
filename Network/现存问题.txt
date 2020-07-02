@@ -1,0 +1,3 @@
+1:SetPackageHeaderTrailer函数没有加线程锁，可能会导致sendData崩溃，所以现在SetPackageHeaderTrailer函数必须要在Start函数前面调用
+
+2:现在网络库有个性能缺陷，就是每创建一个客户端就会创建一个线程，创建的客户端越多建立的线程也会越多，这就导致如果创建了大量客户端系统的性能和稳定性都会大大降低。

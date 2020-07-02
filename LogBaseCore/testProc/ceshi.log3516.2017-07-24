@@ -1,0 +1,4 @@
+07/24 17:11:33 th:140553418610464 [./LogBaseCore.cpp:147] model ERROR - test 3 
+07/24 17:11:33 th:140553418610464 [./LogBaseCore.cpp:150] EXE WARN - test 4444 
+07/24 17:11:33 th:140553418610464 [./LogBaseCore.cpp:147] EXE ERROR - test 333 
+07/24 17:11:33 th:140553418610464 [./LogBaseCore.cpp:144] EXE INFO - test 33 
