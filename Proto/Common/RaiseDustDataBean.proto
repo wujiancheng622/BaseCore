@@ -1,0 +1,169 @@
+package com.arges.file.proto;  
+import "DevInfoListBean.proto";
+
+/*	TMS	上报扬尘数据的数据结构*/
+message RaisuDustData 
+{
+	optional string     deviceCode	=	1	[default=""];					//  平台设备的id号
+    optional string		id			=	2 	[default=""];                	//	扬尘设备ID 20个字节长度如：1440-0028-sclw-2153
+	optional string		postion		=	3	[default=""];					//	设备位置
+	optional float	  	noise 		= 	4 	[default=0];					//  噪声  
+	optional float		pm10		=	5 	[default=0];					//	PM10
+	optional float		windSpeed	=	6	[default=0];					//	风速
+	optional float		windDirection	=	7	[default=0];				//	风向
+	optional float		tmperature	=	8	[default=0];					//	温度
+	optional float		humidity	=	9	[default=0];					//	湿度
+	optional float		pressure	=	10	[default=0];					//	气压
+	optional float		voltage		=	11	[default=0];					//	电压
+	optional float		pm2_5		=	12	[default=0];					//	PM2.5
+	optional float		longitude	=	13	[default=0];					//	经度
+	optional float		latituede	=	14	[default=0];					//	纬度
+	optional float		temperatureOnboard	=	15	[default=0];			//	板载温度
+	optional float		humidityOnboard		=	16	[default=0];			//	板载湿度
+	optional float		tsp			=	17	[default=0];					//	TSP
+	optional int64		time		=	18	[default=0];					//	时间戳
+} 
+
+
+/*	扬尘消息请求类型	*/
+enum REQUEST_TYPE_OF_RAISE_DUST
+{
+	RAISE_DUST_REQUEST_GET_SRC_DEV_INFO		=	1;							//	获取扬尘数据源设备信息
+	RAISE_DUST_REQUEST_ACTION_LINK			=	2;							//	扬尘数据请求联动
+}
+
+/*	扬尘请求结果	*/
+enum RESULT_TYPE_OF_RAISE_DUST
+{
+	RAISE_DUST_MESSAGE_RESULT_IS_OK			=	1;							//	扬尘消息响应正常
+	RAISE_DUST_MESSAGE_RESULT_IS_ERROR		=	2;							//	异常响应结果
+}
+
+/*	扬尘设备消息	*/
+message RaisuDustMassage
+{
+	optional int32		requestType			=	1	[default = -1];			//	请求类型，参考
+	optional int32		result				=	2	[default = -1];			//	结果类型，参考
+	optional string		resultDescribe		=	3	[default = ""];			//	结果描述
+	optional RaisuDustData	data			=	4;							//	扬尘数据
+	optional DeviceInfo		devInfo			=	5;							//	扬尘设备信息
+}
+
+/*	阀值类型	*/
+enum THRESHOLD_TYPE_OF_ALARM_FOR_RAISE_DUST
+{
+	RAISE_DUST_ALARM_THRESHOLD_OF_HIGH_LIMIT	=	1;							//	扬尘报警的上限阀值
+	RAISE_DUST_ALARM_THRESHOLD_OF_LOWER_LIMIT	=	2;							//	扬尘报警的下限阀值
+}
+
+/*	扬尘报警类型	*/
+enum ALARM_TYPE_OF_ARISE_DUST
+{
+	RAISE_DUST_ALARM_TYPE_FOR_NOISE		=	1;									//	噪声
+	RAISE_DUST_ALARM_TYPE_FOR_PM_2_5	=	2;									//	pm2.5
+	RAISE_DUST_ALARM_TYPE_FOR_PM_10		=	3;									//	PM10
+	RAISE_DUST_ALARM_TYPE_FOR_TSP		=	4;									//	颗粒物
+	RAISE_DUST_ALARM_TYPE_FOR_WIND_SPEED	=	5;								//	风速
+	RAISE_DUST_ALARM_TYPE_FOR_WIND_DIRECTION=	6;								//	风向
+	RAISE_DUST_ALARM_TYPE_FOR_TEMPERATURE	=	7;								//	温度
+	RAISE_DUST_ALARM_TYPE_FOR_HUMIDITY		=	8;								//	湿度
+	RAISE_DUST_ALARM_TYPE_FOR_PRESSURE		=	9;								//	气压
+	RAISE_DUST_ALARM_TYPE_FOR_VOLTAGE		= 	10;								//	电压
+}
+
+/*	扬尘报警消息	*/
+message RaisuDustAlarmMessage
+{
+	optional string		sn				=	1	[default = ""];					//	报警源设备标识
+	optional int64		time			=	2	[default = -1];					//	报警时间
+	optional string		code			=	3	[default = ""];					//	报警源设备编码
+	repeated RaisuDustAlarm  raiseAlarms =  4;
+	message RaisuDustAlarm
+	{	
+		optional int32		alarmCap		=	1	[default = -1];					//	阀值类型，参考THRESHOLD_TYPE_OF_ALARM_FOR_RAISE_DUST
+		optional float		alarmNum		=	2	[default = -1];					//	实时报警值
+		optional int32		alarmType		=	3	[default = -1];					//	报警类型，参考ALARM_TYPE_OF_ARISE_DUST
+		optional float		standardNum		=	4	[default = -1];					//	报警阀值
+	}
+}
+
+
+/*	扬尘预案数据结构	*/
+message RaisuDustPlanData
+{
+	optional int64		id				=	1	[default = -1];					//				adm_env_setting->ID
+	optional string		code			=	2 	[default = ""];					//	设备编码	adm_env_setting->CODE
+	optional string		sn				=	3	[default = ""];					//	设备标识	adm_env_setting->SN
+	optional float		humidityHigh	=	4	[default = 100000];				//	湿度上限	adm_env_setting->HUMIDITY_HIGH
+	optional float		humidityLower	=	5	[default = 100000];				//	湿度下限	adm_env_setting->HUMIDITY_LOWER
+	optional float		noiseHigh		=	6	[default = 100000];				//	噪声上限	adm_env_setting->NOISE_HIGH
+	optional float		noiseLower		=	7	[default = 100000];				//	噪声下限	adm_env_setting->NOISE_LOWER
+	optional float		pm10High		=	8	[default = 100000];				//	PM10上限	adm_env_setting->PM_PART1_HIGH
+	optional float		pm10Lower		=	9	[default = 100000];				//	PM10下限	adm_env_setting->PM_PART1_LOWER
+	optional float		pm2_5_high		=	10	[default = 100000];				//	PM2.5上限	adm_env_setting->PM_PART2_HIGH
+	optional float		pm2_5_lower		=	11	[default = 100000];				//	PM2.5下限	adm_env_setting->PM_PART2_LOWER
+	optional float 		pressureHigh	=	12	[default = 100000];				//	气压上限	adm_env_setting->PRESSURE_HIGH
+	optional float		pressureLower	=	13	[default = 100000];				//	气压下限	adm_env_setting->PRESSUER_LOWER
+	optional float		tmperatureHigh	=	14	[default = 100000];				//	温度上限	adm_env_setting->TEMPERATURE_HIGH
+	optional float		tmperatureLower	=	15	[default = 100000];				//	温度下限	adm_env_setting->TEMPERATURE_LOWER
+	optional float 		tspHigh			=	16	[default = 100000];				//	tsp上限		adm_env_setting->TSP_HIGH
+	optional float		tspLower		=	17	[default = 100000];				//	tsp下限		adm_env_setting->TSP_LOWER
+	optional float		voltageHigh		=	18	[default = 100000];				//	电压上限	adm_env_setting->VOLTAGE_HIGH
+	optional float		voltageLower	=	19	[default = 100000];				//	电压下限	adm_env_setting->VOLTAGE_LOWER
+	optional float		windDirectionHigh	=	20 	[default = 100000];			//	风向上限	adm_env_setting->WIND_DIRECTION_HIGH
+	optional float		windDirectionLower	=	21	[default = 100000];			//	风向下限	adm_env_setting->WIND_DIRECTION_LOWER
+	optional float		windSpeedHigh		=	22	[default = 100000];			//	风速上限	adm_env_setting->WIND_SPEED_HIGH
+	optional float		windSpeedLower		=	23	[default = 100000];			//	风速下限	adm_env_setting->WIND_SPEED_LOWER
+	optional DeviceInfo	devInfo			=	24;									//	设备信息
+	optional int32		keepTime		=	25	[default = 0];					//	报警时间阀值，持续时间后触发报警
+}
+
+/*	扬尘预案请求类型	*/
+enum REQUEST_TYPE_OF_PLAN_FOR_RAISE_DUST 
+{
+	RAISE_DUST_PLAN_GET_ALL			=	1;									//	请求所有
+	RAISE_DUST_PLAN_GET_DEV			=	2;									//	请求扬尘设备信息
+	RAISE_DUST_PLAN_GET_BY_DEVCODE	=	3;									//	根据设备编码获取扬尘预案
+	RAISE_DUST_PLAN_GET_BY_BOXCODE	=	4;									//	根据box编码获取扬尘预案
+	RAISE_DUST_PLAN_ADD				=	5;									//	扬尘预案添加
+	RAISE_DUST_PLAN_UPDATE			=	6;									//	扬尘预案修改
+	RAISE_DUAT_PLAN_DELETE			=	7;									//	扬尘预案删除
+}
+
+/*	扬尘预案结果类型	*/
+enum RESULT_TYPE_OF_PLAN_FOR_RAISE_DUST 
+{
+	RAISE_DUST_PLAN_IS_OK			=	1;									//	正常响应
+	RAISE_DUST_PLAN_IS_ERROR		=	2;									//	异常响应
+}
+
+/*	扬尘预案消息	*/
+message RaisuDustAlarmPlanMessage
+{
+	optional int32		requestType		=	1 	[default = -1];					//	请求类型，参考REQUEST_TYPE_OF_PLAN_FOR_RAISE_DUST
+	optional int32		result			=	2	[default = -1];					//	结果，参考RESULT_TYPE_OF_PLAN_FOR_RAISE_DUST
+	optional bytes		resultDescribe	=	3	[default = ""];					//	结果描述
+	repeated RaisuDustPlanData	datas	=	4;									//	扬尘设备报警阀值
+	optional string 	boxCode			=	5;									//	box设备编码
+	optional string     devCode			=	6;									//	扬尘设备编码
+}		
+
+/*  扬尘噪声超标噪音录音数据 */
+message  RaisuDustNoiseData
+{
+	optional string     deviceCode		= 1		[default=""];	//平台设备的id号
+	optional string		id				= 2 	[default=""];   //扬尘设备ID 20个字节长度如：1440-0028-sclw-2153
+	optional float 		longitude 		= 3		[default=0];	//经度
+	optional float 		latitude   		= 4		[default=0];	//伟度
+	optional string	 	date	 		= 5 	[default=""];	//时间
+	optional string 	headerFile		= 6 	[default=""];	//WAV头文件
+	optional string 	filePath		= 7 	[default=""];	//音频文件存储路径
+	optional float		threshold		= 8		[default=0];	//当前阈值
+}
+
+//设置扬尘设备噪音超标阀值
+message RaisuDustNoiseThreshold
+{
+	optional string     deviceCode		= 1		[default=""];	//扬尘设备的id号
+	optional float 		value   		= 2		[default=0];	//噪声阀值
+}

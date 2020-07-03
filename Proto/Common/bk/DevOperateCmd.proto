@@ -1,0 +1,10 @@
+package com.arges.file.proto;
+  
+message DevOperateCmd 
+{
+	optional string  deviceid = 1;  				//设备ID
+	optional int32   operatortype=2;				//操作类型
+	optional int32   userid=3;					    //操作用户ID
+	optional int32	 channel=4;						//操作的通道号
+	optional string	 content=5;					//可以存放具体的命令细节
+}

@@ -1,0 +1,15 @@
+package com.arges.file.proto;    
+
+message ParamMessage {
+    optional int32  		model 	= 1		[default = -1];  				//	消息目标模块
+    optional int32  		Type 	= 2		[default = -1];				//	消息类型
+    optional int32  		code 	= 3		[default = -1];         
+    optional bytes    	content 	= 4 		[default = "default"];   			//	消息体
+    optional int32		srcModule = 5		[default = -1];				//	消息源模块
+    optional string		doman	= 6		[default = "default"];			//	用户域
+    optional string		sessionId	= 7		[default = "default"];			//	会话ID
+    optional string		brokerUrl	= 8		[default = "default"];			//	该请求的响应消息MQ地址
+    optional string		destUrl	= 9		[default = "default"];			//	该请求的响应消息MQ地址
+    optional string		rspIp	= 10		[default = ""];					//	UDP	响应地址
+    optional int32		rspPort	= 11		[default = -1];				//	UDP	响应端口
+} 

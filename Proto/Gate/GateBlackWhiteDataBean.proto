@@ -1,0 +1,17 @@
+package com.arges.file.proto; 
+
+
+message GateBlackWhiteData 
+{
+	optional string  identityid		=	1	[default = "default"];		//身份证ID
+	optional string  wristid		=	2	[default = "default"];		//手环mac
+	optional int32   idtype		 	=   3	[default = -1];				//id类型，用来指示deviceMac和identificationid哪一个字段有效   0：表示wristid字段有效  1：表示identificationid字段有效
+	optional bytes   picture		=	4	[default = "default"];	 	//证件照
+}
+
+
+message GateBlackWhiteDataList
+{
+	repeated GateBlackWhiteData data=1;          //白名单信息
+}
+

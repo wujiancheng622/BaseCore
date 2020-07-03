@@ -1,0 +1,164 @@
+package com.arges.file.proto;
+import "DevInfoListBean.proto";
+
+/**********************************************公共类型************************************************/
+/*	返回结果类型 REQ_DEVICE_LIST	*/
+enum RESULT_TYPE_OF_CATALOG
+{
+	CATALOG_RESULT_ERROR					=	-1;							//	成功
+	CATALOG_RESULT_OK						=	0;							//	失败
+	CATALOG_RESULT_DEVICE_NOTFOUND			=	1;							//	设备未找到
+	CATALOG_RESULT_PARAM_ERROR  			=	2;							//	参数有误
+	CATALOG_RESULT_NOAVAILABLE_MEDIASERVER	=	3;							//	无可用流媒体分发服务器
+	CATALOG_RESULT_REQUEST_TIMEOUT      	=	4;							//	命令超时
+	CATALOG_RESULT_ROUTE_FAILED      	    =	5;							//	命令路由失败
+}
+
+/*	视频资源协议类型	*/
+enum STREAM_PROTOCOL_TYPE
+{
+	STREAM_PROTOCOL_TYPE_RTSP				=	0;						//	RTSP协议
+	STREAM_PROTOCOL_TYPE_RTMP				=	1;						//	RTMP协议
+	STREAM_PROTOCOL_TYPE_HLS				=	2;						//	HLS协议
+}
+
+/*	返回URL类型	*/
+enum URL_TYPE
+{
+	URL_TYPE_INSIDE         				=	0;						//	内网URL
+	URL_TYPE_OUTSIDE        				=	1;						//	外网URL
+}
+
+/*	录像源类型	*/
+enum RECORD_SOURCE_TYPE
+{
+	RECORD_SOURCE_TYPE_BOX         				=	0;						//	BOX录像
+	RECORD_SOURCE_TYPE_FRONT_END        		=	1;						//	前端录像
+}
+
+/**********************************************设备、通道资源查询接口************************************************/
+/*	请求视频资源结果 RSP_DEVICE_LIST	*/
+message RspDeviceList
+{
+	optional int32		result				=	1	[default = -1];			//	结果 RESULT_TYPE_OF_CATALOG，非0表示失败
+	repeated DeviceInfo devinfo				= 	2;							//  设备列表
+}
+
+/*	获取通道信息请求 REQ_CHANNEL_LIST	*/
+message ReqChannelList
+{
+	optional string		devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+}
+
+/*	响应编码通道信息请求 RSP_CHANNEL_LIST	*/
+message RspChannelList
+{
+	optional int32				result		=	1	[default = -1];			//	结果 RESULT_TYPE_OF_CATALOG，非0表示失败
+	repeated EncodeChnnelInfo	infos		=	2;							//	通道信息
+}
+
+/**********************************************实时视频资源查询接口************************************************/
+/*	请求视频流 REQ_PLAY_STREAM	*/
+message ReqPlayStream
+{
+	optional string		devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+	optional string		channelId			=	2	[default = ""];			//	请求参数，通道ID，如：0
+	optional string		streamId			=	3	[default = ""];			//	请求参数，码流ID，0主码流，1子码流
+	optional string		proxyServiceCode	=	4	[default = ""];			//	请求参数，设备代理服务编码，如：CD3FE5
+	optional int32		streamType			=	5	[default = 0];			//	请求参数，使用的取流协议类型 STREAM_PROTOCOL_TYPE
+	optional int32		urlType			    =	6	[default = 0];			//	请求参数，内网url或者外网url URL_TYPE
+    // BMS需要参数
+	optional string		mediaServer			=	7	[default = ""];			//	分发服务器的地址
+}
+
+/*	请求视频流结果 RSP_PLAY_STREAM	*/
+message RspPlayStream
+{
+	optional int32		result				=	1	[default = -1];			//	结果 RESULT_TYPE_OF_CATALOG，非0表示失败
+	optional string		url					=	2	[default = ""];			//	相应协议的url
+}
+
+/**********************************************录像资源查询接口************************************************/
+/*	录像信息	*/
+message RecordInfo
+{
+	optional string		name			=	1	[default = ""];			//	文件名
+	optional string		path			=	2	[default = ""];			//	文件路径
+	optional int32		size			=	3 	[default = 0];			//	文件大小 单位Byte
+	optional string		beginTime		=	4 	[default = ""];			//	起始时间 UTC时间
+	optional string		endTime			=	5	[default = ""];			//	截止时间 UTC时间
+	optional string		id				=	6	[default = ""];			//	ID
+	optional string		reason			=	7	[default = ""];			//	录像原因
+	optional int32		sourceType		=	8	[default = 0]; 			//	来源类型，0:box 1:前端 RECORD_SOURCE_TYPE
+}
+
+/*	录像资源查询 REQ_QUERY_RECORD*/
+message ReqQueryRecord
+{
+	optional string		devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+	optional string		channelId			=	2	[default = ""];			//	请求参数，通道ID，如：1
+	optional string		proxyServiceCode	=	3	[default = ""];			//	请求参数，设备代理服务编码，如：CD3FE5
+	optional int32		sourceType			=	4	[default = 0]; 			//	来源类型，0:box 1:前端 RECORD_SOURCE_TYPE
+	optional int32		recordType			=	5	[default = 0];			//	录像类型，0所有1手动录像2报警录像3移动侦测4视频丢失5视频遮挡6定时录像7全天录像
+	optional string		beginTime			=	6 	[default = ""];			//	起始时间
+	optional string		endTime				=	7	[default = ""];			//	截止时间
+	optional int32		offset				=	8 	[default = 0];			//	查询偏移量
+	optional int32		count				=	9	[default = 0];			//	查询数量
+}
+
+/*	查询录像资源结果 RSP_QUERY_RECORD	*/
+message RspQueryRecord
+{
+	optional int32			result			=	1	[default = -1];		//	结果 RESULT_TYPE_OF_CATALOG，非0标识失败
+	repeated RecordInfo		recordInfos		=	2;						//	结果集
+}
+
+/**********************************************录像资源回放接口************************************************/
+/*	录像资源回放 REQ_PLAY_RECORD	*/
+message ReqPlayRecord
+{
+	optional string		devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+	optional string		channelId			=	2	[default = ""];			//	请求参数，通道ID，如：1
+	optional string		proxyServiceCode	=	3	[default = ""];			//	请求参数，设备代理服务编码，如：CD3FE5
+	optional string		beginTime			=	4 	[default = ""];			//	起始时间
+	optional string		endTime				=	5	[default = ""];			//	截止时间
+	optional int32		sourceType			=	6	[default = 0]; 			//	来源类型，0:box 1:前端 RECORD_SOURCE_TYPE
+}
+
+/*	请求录像回放结果 RSP_PLAY_RECORD	*/
+message RspPlayRecord
+{
+	optional int32		result			=	1	[default = -1];			//	结果 RESULT_TYPE_OF_CATALOG，非0表示失败
+	optional string		ip				=	2	[default = ""];			//	地址
+	optional int32		port			=	3	[default = -1];			//	端口
+	optional string		token			=	4	[default = ""];			//	令牌
+	optional string		session			=	5	[default = ""];			//	回放句柄，用于发送回放控制命令
+}
+
+/**********************************************录像资源下载接口************************************************/
+/*	录像资源下载 REQ_DOWNLOAD_RECORD	*/
+message ReqDownloadRecord
+{
+	optional string			devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+	optional string			proxyServiceCode	=	2	[default = ""];			//	请求参数，设备代理服务编码，如：CD3FE5
+	optional RecordInfo		info				=	3;              			//	录像文件信息
+	optional int32		    offset				=	4 	[default = 0];			//	文件偏移量
+}
+
+/*	请求录像下载结果 RSP_DOWNLOAD_RECORD	*/
+message RspDownloadRecord
+{
+	optional int32		result			=	1	[default = -1];			//	结果 RESULT_TYPE_OF_CATALOG，非0表示失败
+	optional string		ip				=	2	[default = ""];			//	地址
+	optional int32		port			=	3	[default = -1];			//	端口
+	optional string		token			=	4	[default = ""];			//	令牌
+}
+
+/**********************************************录像资源上报接口************************************************/
+/*	录像资源上报 NOTICE_REPORT_RECORD	*/
+message NoticeReportRecord
+{
+	optional string			devId				=	1	[default = ""];			//	请求参数，设备ID，如：1000000
+	optional string			channelId			=	2	[default = ""];			//	请求参数，通道ID，如：1
+	optional RecordInfo		info				=	3;              			//	录像文件信息
+}

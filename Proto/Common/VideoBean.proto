@@ -1,0 +1,73 @@
+package com.arges.file.proto;
+import "DevInfoListBean.proto";
+import "TimeTemplateBean.proto";
+
+/*	录像计划描述	*/
+message VideoPlanDescri
+{
+	optional int64	id					=	1	[default = 0];			//	主键id
+	optional int64	timetempId			=	2	[default = 0];			//	时间模板id
+	optional string planname			=	3	[default = ""];			//	计划名称
+	optional int32 	isIncludeSub		=	4	[default = 0];			//	是否包含下级
+	optional int32 	assistantStream		=	5	[default = 0];			//	使用码流类型
+	optional string memo				=	6	[default = ""];			//	描述
+	optional int32	state				=	7	[default = 0];			//	状态
+	optional int32  planType			=	8	[default = 0];			//	
+	optional int64 	time				=	9	[default = 0];			//	时间
+	optional int64	channelCapacity		=	10	[default = 0];			//	通道需求容量
+	optional int32	distributeState		=	11	[default = 0];			//	分配状态：0：未分配；1：分配成功；2：空间不够；3:SS不可达
+	optional string storagePath 		=	12	[default = ""];			//	存储路径
+	optional int64	storageSize			=	13	[default = 0];			//	实际分配存储空间
+	optional int32	planState			=	14	[default = 0];			//	计划状态：0：正在下发；1：已经下发；2：写入正常；3:写入错误
+	optional int32 	capacityConfigState	=	15	[default = 0];			//	空间配置状态：0：配置中；1：配置成功；2：失败：SS不可达
+	optional int32 	planConfigState		=	16	[default = 0];			//	计划配置状态：0：配置中；1：配置成功；2：失败：SS不可达
+	optional string uuid				=	17	[default = ""];			//	CQFS磁盘编号
+	optional string devcode				=	18	[default = ""];			//	IPC编码
+	optional int32	devState			=	19	[default = 0];			//	IPC状态：0：不在线；1：在线
+	optional int32 addType				=	20	[default = 0];			//	添加方式 1:平台 2:box 3:前端
+	optional TimeTemplateData timeTmp	=	21;							//	时间模板
+}
+
+/*	录像计划数据结构	*/
+message VideoPlanInfo
+{
+	optional int64	id					=	1	[default = 0];			//	主键id
+	optional VideoPlanDescri desc		=	2;							//	描述信息
+	repeated string	channelFlag			=	3;							//	示例：1000086$1$0$0
+	repeated DeviceInfo		encoders	=	4;							//	录像相关的所有设备信息
+	repeated DeviceInfo		boxs		=	5;							//	相关的box信息
+}
+
+/*	录像计划消息	*/
+message VideoPlanMessage
+{
+	optional int32		requestType		=	1	[default = -1];			//	请求类型
+	optional int32		result			=	2	[default = -1];			//	结果
+	optional string		resultDescribe	=	3	[default = ""];			//	结果描述
+	repeated VideoPlanInfo	datas		=	4;							//	结果集
+	repeated string		ids				=	5;							//	请求参数，录像计划IDS
+	optional string		org				=	6	[default = ""];			//	请求参数，项目组织
+	optional string    	devcode			= 	7;							//	box设备编码
+}
+
+/*	录像计划请求类型	*/
+enum REQUEST_TYPE_OF_VIDEO_PLAN 
+{
+	VIDEO_PLAN_REQUEST_GET_BY_IDS		=	1;							//	通过IDS获取
+	VIDEO_PLAN_REQUEST_GET_DEV_INFO		=	2;							//	获取设备信息
+	VIDEO_PLAN_REQUEST_GET_BY_BOX_CODE	=	3;							//	根据Box编码获取
+	VIDEO_PLAN_REQUEST_GET_ALL			=	4;							//	获取所有
+	VIDEO_PLAN_REQUEST_GET_BY_ORG		=	5;							//	按组织区域获取
+	VIDEO_PLAN_ADD_CHANNEL				=	6;							//	添加编码通道
+	VIDEO_PLAN_REMOVE_CHANNEL			=	7;							//	异常编码通道
+	VIDEO_PLAN_UPDATE_DESCRIBE			=	8;							//	描述信息更新
+	VIDEO_PLAN_ADD						=	9;							//	添加录像计划
+	VIDEO_PLAN_DELETE					=	10;							//	删除录像计划
+}
+
+/*	录像计划结果类型	*/
+enum RESULT_TYPE_OF_VIDEO_PLAN
+{
+	VIDEO_PLAN_RESULT_IS_ERROR			=	-1;							//	结果异常
+	VIDEO_PLAN_RESULT_IS_OK				=	0;							//	OK
+}

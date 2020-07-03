@@ -1,0 +1,29 @@
+package com.arges.file.proto; 
+
+
+
+enum MODULETYPE 
+{
+	GATE		=0;
+	GATE_CLIENT =1;
+}
+
+enum DATATYPE 
+{
+	REQ_HEART				=	0;		//Gate给GateClient的心跳包
+	RSP_HEART				=	1;		//GateClient给Gate的心跳包回复		
+	VERIFYINFOREPORT		=	2;		//GateClient给Gate的验证信息
+	BLACKWHITEDATA			=	3;		//Gate给GateClient发送黑白名单
+	QUERYBLACKWHITE			=	4;		//GateClient向GateClient查询白名单信息
+	RSSI_THRESHOLD	=	5;		//设置手环信号阀值
+}
+
+message HeartReq //TPX给GateClient发送心跳包
+{
+	optional string  userdata	=	1	[default = "default"];	//用户数据
+}
+
+message HeartRsp //GateClient给TPX发送心跳包回复
+{
+	optional string  userdata	=	1	[default = "default"];	//用户数据
+}

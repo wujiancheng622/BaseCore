@@ -1,0 +1,159 @@
+package com.arges.file.proto;  
+import "DevInfoListBean.proto" ;
+import "SignInDataBean.proto" ;
+
+/*	签到类型	*/
+enum TYPE_OF_SIGN_IN
+{
+	SIGN_IN_TYPE_IS_THE_WHOLE_DAY		=	1;							//	全日制，默认时间为0~24点
+	SIGN_IN_TYPE_IS_SELF_DEFILE			=	2;							//	自定义
+	SIGN_IN_TYPE_IS_ATTENDANCE			=	3;							//	考勤，默认时间为0~24点
+}
+
+/*	字幕显示类型	*/
+enum SUBTITLE_TYPE_FOR_SHOW
+{
+	SUBTITLE_TYPE_OF_REAL_TIME			=	1;							//	实时信息字幕
+	SUBTITLE_TYPE_OF_HISTORY			=	2;							//	历史信息字幕
+	SUBTITLE_TYPE_OF_VIP				=	3;							//	VIP信息字幕
+}
+
+/*	会议系统配置类型	*/
+enum CONFIG_TYPE_OF_MEETING_FOR_SYSTEM
+{
+	MEETING_CONFIG_TYPE_FOR_HOT_MAP		=	1;							//	会议热力图系统配置
+	MEETING_CONFIG_TYPE_FOR_ELECTRONIC_MAP	=	2;						//	会议电子地图系统配置
+}
+
+/*	会议热力图	*/
+message HostMapOrgData
+{
+	optional string		orgCode			=	1	[default = ""];				//	会议组织的下级组织编码
+	repeated string		loginName		=	2 ;				//	该组织下的会议签到IPC的GB28181的登录名
+}
+
+/*	会议信息结构	*/
+message MeetingMessage 
+{
+	optional string	meetName			=	1 	[default = ""];				//	签到会议名称 						n_meeting->name
+	optional int32  meetType 			= 	2	[default = -1];				//  签到类型，参考TYPE_OF_SIGN_IN 		n_meeting->signType				
+	optional uint64 startTime 			= 	3	[default = 0];				//	会议开始时间						n_meeting->startDate  				
+	optional uint64 endTime 			= 	4	[default = 0];				//	会议结束时间						n_meeting->endDate  				
+	optional string deviceCode    		= 	5	[default = ""];				//	采集设备编码						n_meet_room->DEVICE_CODE
+	optional string collectDevice		=	6	[default = ""];				//	采集设备ID（28181设备的用户名）		n_meet_room->collectDevice
+	optional string encoderChanner 		= 	7	[default = ""];				//	播放视频的通道编码例如100000$1$0$0  n_meet_room->channel  				
+	optional int32 	rssi 				= 	8	[default = 0];				//	手环的灵敏度  						n_meet_room->rssi 
+	optional string bBoxCode			= 	9	[default = ""];				//	具体展示的bBox设备编码				n_meeting->bBoxCode	
+	optional string noticeId			= 	10	[default = ""];				//	公告id  							n_meet_model->noticeId	               
+	optional int32  showModule			= 	11	[default = -1];				//	具体界面展现形式9种 				n_meet_model->representation
+	optional int32  backgroundId 		= 	12	[default = -1];				//	背景皮肤：1大气红   2科技蓝  3清新绿n_meet_model->background  				
+	optional string ip 					= 	13	[default = ""];				//	热力图服务ip  						n_system（CONFIG_TYPE=2）->CONFIG_PAR1 ，参考 CONFIG_TYPE_OF_MEETING_FOR_SYSTEM
+	optional int32  port				= 	14	[default = 0];				//	热力图服务端口						n_system（CONFIG_TYPE=2）->CONFIG_PAR2          	
+	optional string  orgCode			= 	15	[default = ""];				//	默认显示在大屏的热力图节点			n_system（CONFIG_TYPE=1）->CONFIG_PAR1     
+	repeated WelcomInfo  	welcomInfoList		= 	16;						//	欢迎语字幕显示集合        	      	
+	repeated vipShowTime  	vipShowTimeList		= 	17;   					//	欢迎语字幕显示集合           	
+	optional string       	meetId   	= 	18	[default = ""];				//	会议id   							n_meeting----id  
+	repeated HostMapOrgData	hostOrgs	=	19;								//	会议组织orgCode下的组织节点及节点所属的签到IPC
+	repeated Notice			notices		=	20;								//	会议公告内容
+	optional int32	stat				=	21	[default = 0];				//	会议状态							n_meeting->status
+	repeated WristUserName  wristUser	=	22;								//	会议白名单
+	
+	/*	欢迎字幕	*/
+	message WelcomInfo 
+	{ 
+		optional int32		welcomType 	=   1	[default = -1];				//	字幕信息，参考SUBTITLE_TYPE_FOR_SHOW  
+		optional string  	welcomPre 	= 	2	[default = ""];				//	字幕前缀信息						n_meet_model_subtitle->historyPre，realtimePre，subtitlePre  				
+		optional string 	welcomPost 	= 	3	[default = ""];				//	字幕后缀信息						n_meet_model_subtitle->historyPost，realtimePost，subtitlePost  				
+	}
+	/*	欢迎字幕VIP配置	*/
+	message vipShowTime 
+	{ 
+		optional int32   	vipLevel 	=   1	[default = -1];				//	vip级别  							n_vip_config->level          
+		optional int32  	time 		= 	2	[default = -1];				//	显示时间以S为单位					n_vip_config->time  				
+	}
+	/*	会议公告	*/
+	message Notice
+	{
+		optional int64		id 			=	1 	[default = -1];				//	公告id			n_notice->id
+		optional string		content		=	2 	[default = ""];				//	公告内容
+		optional string		devId		=	3 	[default = ""];				//	设备ID
+		optional int64		endDate		=	4	[default = 0];				//	结束时间
+		optional string		keyWord		=	5	[default = ""];				//	
+		optional int64		startDate	=	6	[default = 0];				//	开始时间
+		optional string		type 		=	7 	[default = ""];				//	
+		optional string		userId		=	8	[default = ""];				//
+		optional string		week		=	9	[default = ""];				//	
+	}
+}
+
+/*	会议操作类型	*/
+enum DO_TYPE_OF_MEETING
+{
+	MEETING_ADD							=	1;								//	添加会议
+	MEETING_UPDATE						=	2;								//	会议更新
+	MEETING_DELETE						=	3;								//	会议删除
+	MEETING_QUERY_BY_ID					=	4;								//	根据ID查询会议信息
+	MEETING_GET_DEV_BY_ID				=	5;								//	根据会议ID获取会议的展示bBox设备信息
+	MEETING_GET_ALL						=	6;								//	获取所有会议信息
+	MEETING_STOP						=	7;								//	会议停止
+	MEETING_START						=	8;								//	会议启动
+	MEETING_RESTART						=	9;								//	会议重启
+	MEETING_GET_BY_BOX_CODE				=	10;								//	根据box编码获取
+}
+
+/*	会议结果响应	*/
+enum RESULT_TYPE_OF_MEETING
+{
+	MEETING_QUERY_IS_OK					=	1;								//	查找结果正常
+	MEETING_SET_IS_NULL					=	2;								//	结果集为NULL
+	MEETING_SUBTITLE_SET_IS_NULL		=	3;								//	会议字幕结果集为NULL
+	MEETING_SYSTEM_CONFIG_SET_IS_NULL	=	4;								//	会议的系统配置信息的结果集为NULL
+	MEETING_DEVICE_IS_OK				=	5;								//	获取会议展示bBox的设备信息成功
+}
+
+/*	取流token响应结构	*/
+message RspConnectOfMedia
+{
+	optional string			 code				=	1 	[default = ""];		//	设备编码
+	optional string			 token				=	2	[default = ""];		//	bBox取流token
+	optional string			 ip					=	3	[default = ""];		//	bBox IP
+	optional int32			 port				=	4	[default = 0];		//	bBox端口号
+}
+
+/*	会议信息下发	*/
+message MeetingData
+{
+	optional int32			 type				=	1	[default = -1];		//	请求类型，参考DO_TYPE_OF_MEETING
+	optional int32			 result				=	2;						//	结果响应，参考
+	optional DeviceInfo	     devInfo			=	3;						//	展示所属的设备信息
+	repeated DeviceInfo		 devOfSignIn		=	4;						//	签到IPC设备信息列表
+	optional MeetingMessage  meetingMessage		=	5;						//	会议信息
+	optional RspConnectOfMedia	connOfSignIn	=	6;						//	实时签到信息的连接
+	repeated RspConnectOfMedia	connOfMedia		=	7;						//	取流连接
+}
+
+/*	所有会议	*/
+message AllMeetingMessage
+{
+	optional int32			type				=	1	[default = -1];		//	请求类型，参考DO_TYPE_OF_MEETING
+	optional int32			result				=	2	[default = -1];		//	结果响应，参考RESULT_TYPE_OF_MEETING
+	optional bytes			resultDescribe		=	3	[default = ""];		//	结果描述
+	repeated MeetingData	meetings			=	4;
+	optional string			boxCode				=	5;						//	box设备编码
+}
+
+/*	会议展示状态类型	*/
+enum STAT_TYPE_OF_MEETING_SHOW
+{
+	MEETING_SHOW_IS_USING						=	1;						//	会议展示使用中
+	MEETING_SHOW_IS_STOP						=	2;						//	会议展示停止
+	MEETING_SHOW_IS_CLOSE						=	3;						//	会议展示关闭
+}
+
+/*	使用状态上报	*/
+message ReportStatOfMeetingShow
+{
+	optional string			devCode				=	1	[default = ""];		//	展示bBox设备编号
+	optional string			meetingName			=	2 	[default = ""];		//	会议名称
+	optional int32			stat				=	3 	[default = -1];		//	状态，参考 STAT_TYPE_OF_MEETING_SHOW
+}

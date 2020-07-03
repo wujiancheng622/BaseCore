@@ -1,0 +1,27 @@
+package com.arges.file.proto;  
+
+enum MODULE_TYPE 
+{
+	/*	web服务	*/
+	WEB_C_SERVER					=	100;		//	
+	WEB_N_SERVER					=	101;
+	WEB_F_SERVER					=	102;		//	
+	WEB_B_SERVER                    =   103;
+	/*	C++服务	*/
+	C_TMS_SERVER					=	200;		//	tms服务
+	C_ETS_SERVER					=	201;		//	ets服务
+	C_DC_SERVER						=	202;		//	数据中心服务
+	C_DIS_SERVER					=	203;		//	dis服务
+	C_DISCOVEYPROXY_SERVER			=	204;		//	代理发现服务
+	C_DPX_SERVER					=	205;		//	dpx服务
+	C_VSQUARE_SERVER				=	206;		//	视频广场服务
+	C_SIS_SERVER					=	207;		//	平台管理服
+	C_CMS_SERVER					=	208;		//	cms服务
+	C_CSD_DC_SERVER					=	209;		//	cassandra版本的数据中心服务
+	C_CONSUL_SERVER					=	210;		//	Consul服务
+	C_CLIENT_SERVER					=	211;		//	客户端服务
+	C_BMS_SERVER                    =   212;        //  bms服务
+	C_BPX_SERVER                    =   213;        //  bpx服务
+	C_DMS_SERVER					=	217;		//	DMS服务
+	C_FACECALL_SERVER				=	218;		//	人脸抓图
+}

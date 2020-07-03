@@ -1,0 +1,97 @@
+package com.arges.file.proto;
+import "DevInfoListBean.proto";
+
+enum REPORTDATATYPE
+{
+	DEVICE_STATUS		=	0;
+	REALTIME_DATA		=	1;		//实时数据
+	ALARM_DATA			=	2;		//报警数据	
+	QUERY_DATA			=	3;		//向上查询数据
+}
+
+enum REALTIME_DATA_TYPE
+{
+	GATE_VERIFY_INFO	=0 ; 		//闸机设备验证信息
+}
+
+enum ALARM_DATA_TYPE
+{
+	COMMON_ALARM_DATA	=1000;
+}
+
+enum QUERY_DATA_TYPE
+{
+	COMMON_QUERY_DATA	=2000;
+}
+
+
+enum DATADISTRIBUTETYPE
+{
+	GATE_BLACKWHITE_DATA	=	3000;		//闸机白名单信息
+}
+
+
+
+
+
+message AlarmHostOperEvent
+{
+	optional string devId 			=1  [default = ""];  	//设备deviceid
+	repeated string channel			=2	;  	//设备通道
+	optional int32  operatortype 	=3  [default = -1];     //操作类型
+	optional string username		=4	[default = ""];  	//操作的用户
+}
+
+
+
+
+
+
+/*	设备数据上报	*/
+message DataReport
+{
+	optional string  devId 					= 1	[default = ""];  	//设备deviceid
+	optional REPORTDATATYPE   datatype		= 2	;
+	optional int32   contentdatatype		= 3	[default = -1];     //用来指示content数据类型				
+	optional string  content 				= 4	[default = ""];  	//具体的proto信息
+}
+
+/*	白名单请求类型	*/
+enum REQUETS_TYPE_OF_WHITE_LIST
+{
+	WHITE_LIST_REQUEST_ROLLING_MILL_DEV		=	1;					//	请求轧机设备信息
+	WHITE_LIST_ISSUE						=	2;					//	白名单下发
+}
+
+/*	设备白名单下发	*/
+message DataDistribute
+{	
+	optional int32   datatype			= 	1	[default = -1];      	//	数据类型，参考REQUETS_TYPE_OF_WHITE_LIST
+	optional int32 	 result				=	2	[default = -1];			//	结果
+	optional bytes	 resultDescribe		=	3	[default = ""];			//	结果描述		
+	optional string  content 			= 	4	[default = ""];  		//	具体的proto信息
+	repeated DeviceInfo	devs			= 	5;							//	所有设备信息
+}
+
+/*	BPX信息下发	*/
+message IssueBpxData
+{	
+	optional int32   datatype			= 	1	[default = -1];      	//	数据类型，参考REQUETS_TYPE_OF_WHITE_LIST
+	optional int32 	 result				=	2	[default = -1];			//	结果
+	optional bytes	 resultDescribe		=	3	[default = ""];			//	结果描述		
+	optional string  content 			= 	4	[default = ""];  		//	具体的proto信息
+	optional DeviceInfo	devs			= 	5;							//	所有设备信息
+}
+
+/*	设备操作命令下发	*/
+message OperateDevice
+{
+	optional int32   operatorType		= 1	[default = -1];             //数据类型	
+	optional DeviceInfo	devInfo			= 2;							//	设备信息					
+	repeated string  nodePath			= 3;             //要控制的带路径节点比如01%002 表示1分区下面的2号节点，如果不需要控制到具体的某个节点或者设备就没有节点，该参数可以不填												
+	optional string  content 			= 4	[default = ""];  			//具体的控制信息
+}
+
+
+
+

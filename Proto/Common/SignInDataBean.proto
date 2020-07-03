@@ -1,0 +1,184 @@
+package com.arges.file.proto;
+import "HbeaconDataBean.proto";
+import "DevInfoListBean.proto";
+
+/*	签到历史数据	*/
+message SigninDataForHistory
+{
+	optional uint64 			starttime		=	1[default=0];			//开始时间
+	optional uint64				endtime			=	2[default=0];			//结束时间
+	optional string 			deviceCode		=	3[default="default"];	//采集设备code
+	optional int32				signinnum		=	4[default=0];			//签到人数
+	repeated string 			wristmac		=	5;						//手环mac地址list
+	repeated WristUserPhoto 	wristphotos		=	6;						//手环用户对应头像
+	repeated WristUserName  	wristnames		=	7;						//手环用户对应姓名
+	repeated WristSignInTime 	signintimes		=	8;						//手环用户对应签到时间
+}	
+
+/*	手环用户图片	*/
+message	WristUserPhoto
+{
+	optional string wristmac		=	1	[default="default"];					//手环mac地址
+	optional bytes  wristuserphoto	=	2	[default="default"];					//手环用户头像
+}
+
+/*	认证方式	*/
+enum AUTO_MODE_OF_USER
+{
+	AUTO_MODE_BY_WRIST				=	0;											//	手环认证 
+	AUTO_MODE_BY_IDENTIFY			=	1;											//	身份证认证
+}
+
+/*	手环用户信息	*/
+message WristUserName
+{
+	optional string wristmac		=	1	[default="default"];					//	手环mac地址		n_wristband->CODE
+	optional string wristusername	=	2	[default="default"];					//	手环用户姓名	n_wristband->name
+	optional int32	attendanceStatus=	3	[default = -1];							//	签到状态		n_wristband->attendanceStatus
+	optional int32	wristCodeType	=	4	[default = -1];							//	手环类型：1代2代3代	n_wristband->CODE_TYPE
+	optional int64	date			=	5	[default = -1];							//	创建日期		n_wristband->DATE
+	optional string idCard			=	6	[default = ""];							//	身份证认证		n_wristband->ID_CARD
+	optional string nickName		=	7	[default = ""];							//	绰号			n_wristband->NICK_NAME
+	optional string	position		=	8	[default = ""];		 					//	职称			n_wristband->POSITION
+	optional int32 	sex				=	9	[default = -1];							//	性别			n_wristband->SEX
+	optional int32	type			=	10	[default = 0];							//	手环白名单标识VIP等级；轧机白名单标识 GateBlackWhiteData->idtype
+	optional bytes 	identityPicture	=	11	[default = ""];							//	证件照			存在CSD数据库中
+	optional int32	autoMode		=	12	[default = -1];							//	认证方式，参考 AUTO_MODE_OF_USER	n_wristband->AUTO_MODE
+}
+
+/*	白名单请求类型	*/
+enum REQUEST_TYPE_OF_WHITE_LIST
+{
+	WHITE_LIST_REQUEST_GET_ALL		=	1;											//	获取所有
+	WHITE_LIST_REQUEST_GET_BY_WRIST_MAC	=	2;										//	根据MAC获取
+	WHITE_LIST_REQUEST_ADD			=	3;											//	添加白名单用户
+	WHITE_LIST_REQUEST_UPDATE		=	4;											//	修改白名单用户
+	WHITE_LIST_REQUEST_DELETE		=	5;											//	删除白名单用户
+	WHITE_LIST_REQUEST_CLEAR		=	6;											//	清空白名单用户
+}
+
+/*	结果类型	*/
+enum RESULT_TYPE_OF_WHITE_LIST
+{
+	WHITE_LIST_RESULT_IS_OK			=	1;											//	正常
+	WHITE_LIST_RESULT_IS_ERROR		=	2;											//	异常
+}
+
+/*	白名单	*/
+message WhiteUserMassage
+{
+	optional int32	requestType		=	1 	[default = -1];							//	请求类型，参考REQUEST_TYPE_OF_WHITE_LIST
+	optional int32 	result			=	2	[default = -1];							//	结果
+	optional bytes	resultDescribe	=	3	[default = ""];							//	结果描述
+	repeated string	macs			=	4;											//	被操作的手环mac，请求参数
+	repeated WristUserName	users	=	5;											//	响应的白名单用户信息
+	optional DeviceInfo		devCode	=	6;											//	bBox设备信息
+}
+
+message QueryBlackWhite //请求白名单
+{
+	optional DeviceInfo  device			=	1;	//所在闸机的device
+}
+
+/*	闸机配置请求类型			*/
+enum REQUEST_TYPE_OF_GATE_CONF
+{
+	GATE_CONF_GET_BY_DEVCODE		=	1;					//根据闸机设备编码获取
+	GATE_CONF_GET_ALL				=	2;					//获取所有
+	GATE_CONF_GET_BY_BOXCODE		=	3;					//根据BOX编码获取
+}
+
+enum RESULT_TYPE_OF_GATE_CONF
+{
+	GATE_CONF_RESULT_IS_OK			=	0;					//正常响应
+	GATE_CONF_RESULT_IS_ERROR		=	1;					//异常响应
+}
+
+message GateConfigureInfo		//闸机配置信息
+{
+	optional DeviceInfo  device			=	4;									//	所在闸机的设备信息
+	optional string validateMode		=	5 [default = ""];  					//	闸机当前验证模式
+	optional double faceRssiThreshold	=	6 [default = -1];					//	闸机人脸比对阀值	
+	optional string	boxcode				=	7 [default = ""];					//	box编码
+}
+
+/*	闸机配置	*/
+message GateConfMessage
+{	
+	optional int32	requestType			=	1 [default = -1];					//	请求类型，参考REQUEST_TYPE_OF_GATE_CONF
+	optional int32 	result				=	2 [default = -1];					//	结果，参考RESULT_TYPE_OF_GATE_CONF
+	optional bytes	resultDescribe		=	3 [default = ""];					//	结果描述
+	repeated string Ids					=	4;									//	请求参数，ID
+	repeated GateConfigureInfo gateConfs	=	5;								//	结果集
+}
+
+
+/*	白名单	*/
+message WhiteUserMassageTest
+{
+	optional int32	requestType		=	1 	[default = -1];							//	请求类型，参考REQUEST_TYPE_OF_WHITE_LIST
+	optional int32 	result			=	2	[default = -1];							//	结果
+	optional bytes	resultDescribe	=	3	[default = ""];							//	结果描述
+}
+
+/*	手环签到时间	*/
+message WristSignInTime
+{
+	optional string wristmac		=	1	[default="default"];					//	手环mac地址
+	optional uint64 signintime		=	2	[default=0];							//	签到时间
+}
+
+/*	实时签到消息	*/
+message SigninMassageForReal 
+{
+    optional string   deviceCode	=	1 [default=""];             		//	设备ID
+	optional Wrist	  wrist 		=	2;									//	单个实时签到数据
+	optional WristUserName	 userName		=	3;							//	签到用户信息
+	optional bytes	  wristuserphoto=	4 [default = ""];					//	联动抓图图片1
+	optional bytes	  wristuserphoto2=	5 [default = ""];					//	抓图图片2
+	optional bytes	  wristuserphoto3=	6 [default = ""];					//	抓图图片3
+} 
+
+/*	区域热力	*/
+message HotMapData
+{
+	optional string	orgCode			=	1	[default = ""];					//	会议组织节点下的本级组织节点
+	repeated string	loginName		=	2;									//	组织节点下所有签到IPC的设备GB28181登录名
+	optional int32	count			=	3	[default = 0];					//	组织节点下的当前总人数
+}
+
+/*	热力图请求类型	*/
+enum REQUEST_TYPE_OF_HOST_MAP
+{
+	HOST_MAP_GET_IPC_BY_ORG			=	1;									//	根据组织节点获取组织下所有签到IPC的GB28181登录名
+	HOST_MAP_GET_PEOPLE_COUNT		=	2;									//	获取组织下所有签到IPC的当前在线总人数
+}
+
+/*	热力图结果类型	*/
+enum RESULT_TYPE_OF_HOST_MAP
+{
+	HOST_MAP_RESULT_IS_OK			=	1;									//	正常响应
+	HOST_MAP_RESULT_IS_ERROR		=	2;									//	异常响应
+}
+
+/*	热力图	*/
+message HotMapMassage
+{
+	optional int32			requestType		=	1	[default = -1];			//	请求类型 
+	optional int32 			result			=	2	[default = -1];			//	结果 
+	optional bytes			resultDescribe  =	3	[default = ""];			//	结果描述
+	optional string			orgCode			=	4	[default = ""];			//	会议热力图的组织节点CODE
+	repeated HotMapData		data			=	5;							//	热力图数据
+}
+
+/*	上报热力图数据	*/
+message ReportHotMapData
+{
+	repeated Data			datas			=	1;							//	数据
+	message Data
+	{
+		optional string 	devCode			=	1 	[default = ""];			//	设备code
+		optional string		orgCode			=	2	[default = ""];			//	设备所属组织
+		repeated Wrist		wristmac		=	3;							//	手环编号
+	}
+}

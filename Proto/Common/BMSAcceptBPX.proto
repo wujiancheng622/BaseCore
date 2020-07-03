@@ -1,0 +1,6 @@
+package com.arges.bmsbpx.proto;
+  
+message BMSAcceptBPX
+{
+	required int64  hHandle = 41; 				//BMS¸øBPX·ÖÅäµÄsocket¾ä±ú
+} 

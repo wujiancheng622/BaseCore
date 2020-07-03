@@ -1,0 +1,105 @@
+package com.arges.file.proto;  
+
+enum DATA_TYPE 
+{
+	/*	小米手环命令	*/
+	REQ_WRITE_WRISTBAND_DATA		=	10000;			//	写入小米手环数据
+	REQ_SAVE_CAPTURE_FOR_ALARM		=	10001;			//	保存报警抓图图片
+	REQ_WRITE_DATE_FOR_CAPTUR_MATCH	=	10002;			//	写入报警图片匹配数据
+	REQ_ADD_SCANNER_DEVICE			=	10003;			//	添加小米扫描器
+	REQ_UPDATE_SCANNER_DEVICE		=	10004;			//	更新小米扫描器设备
+	REQ_DELETE_SCANNER_DEVICE		=	10005;			//	删除小米扫描器
+	REQ_ADD_WRISTAND_DEVICE		    =	10006;			//	添加手环白名单
+	REQ_DELETE_WRISTAND_DEVICE		=	10007;			//	删除手环白名单
+	REQ_CLEARALL_WRISTAND_DEVICE	=	10008;			//  清空手环白名单
+	/*	电视墙命令	*/
+	REQ_KPS_REGISTER				=	10100; 			//	键盘注册
+	REQ_KPS_UNREGISTER				=	10101;			//	键盘注销
+	REQ_KPS_LOGIN					=	10102;			//	键盘登录
+	REQ_KPS_LOGOUT					=	10103;			//	键盘登出
+	REQ_KPS_TVWALL					=	10104;			//	实时上墙
+	/*		*/				
+	/*	小米感知器	*/
+	REQ_HM_CollectorData			=	10300;
+	/*	视频广场下载视频	*/
+	REQ_VIDEO                       =   10500; 
+	REQ_VIDEO_PROGRESS				=	10501;			//	视频广场下载视屏进度返回
+	REQ_LOGIN_PTZ				    =	10502;			//	登录到平台mq服务
+	REQ_LOGINOUT_PTZ				=	10503;			//	登出平台mq服务
+	/*	人脸识别服务	*/
+	REQ_FACE_REGONI                 =   0x104000;          //  请求人脸识别服务
+	RSP_FACE_REGONI					=	0x104001;	
+	REQ_FACE_VEDIO                  =   10601;          //  请求人脸识别录像
+	/*	cassandra数据中心服务*/
+	REQ_INSERT_WRISTBAND_TO_REAL_CHART	=	10700;		//	小米手环数据写入到实时表
+	REQ_INSERT_WRISTBAND_TO_HISTORY		=	10701;		//	小米手环数据写入到历史表
+	REQ_INSERT_ACTION_RECORD			=	10702;		//	插入联动记录(签到图片数据写入到联动表和更新匹配图片数据到联动表)
+	REQ_SELECT_RECORD_OF_SIGN_IN_BY_HISTORY	=	10703;	//	从历史表中查找签到记录
+	REQ_SELECT_RECORD_OF_WRIST_REAL 	= 10704;		//	请求查询实时手环数据
+	REQ_SELECT_PICTURE_OF_WRISTBAND 	= 10705;		//	请求查询证件照
+	REQ_WRITE_RECORD_OF_VSQUARE 		= 10706;		//	写入视频图片名称数据
+
+	/* DIS				*/
+	REQ_UPDATE_DEV_FOR_SCANNER		=	10800;			//	增删改查 扫描器设备信息
+	REQ_DEV_INFO_FROM_DIS			=	10801;			//	向DIS获取设备信息
+	RSP_ADD_DEV_INFO_TO_BMS			=	10802;			//	DIS向BMS发送添加设备信息
+	RSP_UPDATE_DEV_INFO_TO_BMS		=	10803;			//	DIS向BMS发送修改设备
+	REQ_TMS_INFO_FROM_SIS			=	10804;			//  DIS向SIS获取所有的TMS服务信息
+	REQ_TMS_URL_FROM_DIS_BY_DEV_CODE	=	10805;		//	向DIS获取设备对应的TMS信息
+	RSP_TMS_URL_FROM_DIS_BY_DEV_CODE	=	10806;		//	响应
+	RSP_INFO_TMS_GET_DEV			=	10807;			//	DIS	通知tms来取设备
+	RSP_INFO_DMS_GET_DEV			=	10808;			//	DIS 通知dms来取设备
+	
+	/*	DCenter	*/
+	REQ_DEV_INFO_FROM_DC			=	10900;			//	请求设备信息
+	RSP_DEV_INFO_FROM_DC			=	10901;			//	响应获取设备信息请求
+	REQ_GET_ALARM_PLAN				=	10902;			//	获取报警预案
+	RSP_ALARM_PLAN					=	10903;			//	响应报警预案信息
+	REQ_GET_SIGNIN_PIC_CODE			=	10904;			//	获取签到IPC编码
+	RSP_DEV_INFO_FOR_SIGN_IN		=	10905;			//	响应签到IPC信息
+	/*	SIS	*/
+	REQ_SERVICE_INFO_FROM_SIS		=	11000;			//	获取服务信息
+	RSP_SERVICE_INFO_FROM_SIS		=	11001;			//	响应服务信息
+	PUSH_EXCEPTION_SERVICE_INFO_FROM_SIS	=	11002;	//	SIS推送服务异常消息
+	SUBSCRIBE_SERVICE_INFO_FROM_SIS	=	11003;			//	订阅服务信息；定时推送
+	REQ_REGISTER_TO_SIS			=	11004;			//	通过SIS向平台注册
+	RSP_REGISTER_FROM_SIS			=	11005;			//	服务注册响应
+	REQ_LOGOUT_FOR_SERVICE		=	11006;			//	服务注销请求
+	RSP_LOGOUT_FOR_SERVICE			=	11007;			//	服务注销响应
+	RSP_NOTIFY_SERVICEDEAD_TO_LEADER	= 11008;	//当某个服务挂掉后通知leader
+	REQ_GET_ADDRESS_OF_TMS_LEADER		=	11010;		//	获取TMS Leader信息
+	
+	/*	设备管理模块	*/
+	REQ_ADD_DEVICE_FROM_BSERVER		=	12000;			//	增加设备
+	REQ_UPDATE_DEVICE_FROM_BSERVER		=	12001;			//	跟新设备
+	REQ_DELETE_DEVICE_FROM_BSERVER 	=	12002;	//	删除设备
+	
+		
+	/* BMSBPX服务 */
+	REQ_BMS_TO_LEADER_HEART					=	15010;  //BMS给Leader发送的心跳包
+	REQ_LEADER_TO_FOLLOWER_BROADCAST		=	15011;  //BMSLeader给Follower发送的广播包
+	REQ_REQUESTVOTE_RPC						=	15012;  //BMS向其他BMS请求获取选票
+	REQ_RESPONEVOTE_RPC						=	15013;  //BMS给其他BMS发送同意选票 
+	REQ_ADDDEV_TO_BPX						=	15014;	//BMS给BPX发送添加设备命令
+	REQ_DELDEV_TO_BPX						=	15015;	//BMS给BPX发送删除设备命令
+	REQ_MODIFYDEV_TO_BPX					=	15016;	//BMS给BPX发送修改设备命令
+	REQ_OPERATORDEV_TO_BPX					=	15017;	//BMS给BPX发送操作设备命令
+	REQ_BMS_ACCEPT_BPX						=	15018;	//BMS接收到一个BPX连接后会把与之对应的socket 句柄hHandle发送给BPX
+	REQ_BPX_CONNECT_TO_BMS					=	15019;  //BPX在收到BMS发送过来的REQ_BMS_ACCEPT_BPX会把自己的UUDID等信息连同hHandle回复给BMS
+	REQ_BMS_ADD_DEVICE						=	15020;  //BMS添加从web上配置的新设备
+	REQ_BMS_DEL_DEVICE						=	15021;  //BMS删除从web上配置的设备
+	REQ_BMS_UPDATE_DEVICE					=	15022;  //BMS跟新web上配置的设备
+	REQ_BMS_ADD_DEVICE_FROM_DIS				=	15023;  //BMS获取从DIS上下发的完整设备信息
+	REQ_BMS_UPDATE_DEVICE_FROM_DIS			=	15024;  //BMS获取从DIS上跟新的完整设备信息
+	REQ_BPX_ASKFOR_BMS_FROM_LEADER			=	15025;  //BPX向Leader申请一个BMS地址
+	REQ_LEADER_NOTICE_SIS					=	15026;  //Leader向SIS通知自己的信息
+	REQ_LEADER_NOTIFY_BMS_GETDEV_FROM_DIS	=   15027;  //Leader通知BMS去向DIS获取数据，一般发生在某个BMS挂掉的时候
+	REQ_BMSBPXHEART							=	15028;  //BMSBPX之前的心跳包
+	REQ_BPX_DEVICE_STATUS_REPORT			=	15029;  //BPX加载的设备的设备状态数据上报
+	REQ_BPX_DEVICE_ALARM_REPORT				=	15031;  //BPX加载的设备的报警事件数据上报
+	REQ_ADD_SERVER							=	15032;	//添加集群服务总个数
+	REQ_DELETE_SERVER						=	15033;	//删除集群服务
+	
+	REQ_MEDIA								=	0x10c000;			//	取流请求
+	RSP_MEDIA								=	0x10c001;			//	
+}

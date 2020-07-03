@@ -1,0 +1,74 @@
+package com.arges.file.proto;  
+import "DevInfoListBean.proto" ;
+
+/*	设备挂载方式	*/
+enum ACCESS_TYPE_OF_DEVICE 
+{
+	MOUNT_OF_DMS					=	1;									//	挂载到DMS下
+	MOUNT_OF_BBOX					=	2;									//	挂载到bBox下
+	MOUNT_OF_PROXY_SERVICE			=	3;									//	挂载到代理服务下
+}
+
+/*	码流类型	*/
+enum STREAM_TYPE_OF_MEDIA
+{
+	STREAM_TYPE_OF_MAIN				=	1;									//	主码流
+	STREAM_TYPE_OF_SUB				=	2;									//	子码流
+}
+
+/*	取流请求类型	*/
+enum REQUEST_TYPE_OF_MEIDA
+{
+	MEDIA_REQUEST					=	1;									//	取流请求
+	MEIDA_REQUEST_FOR_DEVICE		=	2;									//	获取取流的设备信息
+	MEDIA_RESPONSE_FOR_DEVICE		=	3;									//	取流请求响应设备信息
+}
+
+/*	取流结果类型	*/
+enum RESULT_TYPE_OF_MEDIA
+{
+	MEDIA_RESULT_GET_TOKEN_TRUE	=	1;										//	获取取流标识成功
+	MEDIA_RESULT_GET_TOKEN_ERROR	=	2;									//	获取取流标识失败
+	MEDIA_RESULT_GET_DEVICE_TRUE	=	3;									//	获取取流设备信息成功
+	MEDIA_RESULT_GET_DEVICE_ERROR	=	4;									//	获取取流设备信息失败
+}
+
+/*	取流请求	*/
+message ReqMediaPlay
+{
+	optional int32		requestType		=	1	[default = -1];				//	操作类型，参考：OPRATE_TYPE_OF_MEDIA
+	optional string		channelId		=	2	[default = ""];				//	通道ID，示例:   100000$1$0$0    字段分别为: 设备编码$设备种类$UNIT_SEQ$设备通道序号
+	optional int32		streamType		=	3	[default = 1];				//	码流类型，参考:	STREAM_TYPE_OF_MEDIA
+	optional DeviceInfo dev 			=	4;								//	媒体流源设备信息
+	optional string		token			=	5	[default = ""];				//	取流token
+	optional string		ip				=	6	[default = ""];				//	取流IP
+	optional int32		port			=	7	[default = 0];				//	取流端口
+	optional int32		result			=	8	[default = -1];				//	结果，参考RESULT_TYPE_OF_MEDIA
+	optional bytes 		resultDescribe	=	9	[default = ""];				//	结果描述
+}
+
+/*	取流操作类型	*/
+enum OPRATE_TYPE_OF_MEDIA 
+{
+	START_TO_PLAY_MEDIA				=	1;									//	开始取流
+	STOP_TO_PLAY_MEDIA				=	2;									//	停止取流
+	START_TO_RECEIVE_SCANNER		=	3;									//	开始接收手环数据
+	STOP_TO_RECEIVE_SCANNER			=	4;									//	停止接收手环数据
+}
+
+/*	请求Token对	*/
+message ReqTokenPair
+{
+	optional string		userdata	=	1	[default = ""];					//	用户数据
+}
+
+/*	响应请求Token对	*/
+message RspTokenPair
+{
+	optional string		ip			=	1	[default = ""];					//	响应的取流IP
+	optional int32		port		=	2	[default = -1];					//	响应的取流端口
+	optional string		token1		=	3	[default = ""];					//	响应的取流token1
+	optional string		token2		=	4	[default = ""];					//	响应的取流token2
+	optional int32		result		=	5	[default = -1];					//	结果，参考RESULT_TYPE_OF_MEDIA
+	optional string		userdata	=	6	[default = ""];					//	用户数据
+}

@@ -1,0 +1,8 @@
+package com.arges.file.proto;    
+
+message LeaderBroadcast {
+    optional string  		term 	= 1		[default = ""];  			//	leader的当前周期数
+	optional string  		identifier 	= 2		[default = ""];  			//	leader的唯一标识符
+	optional int32  		servernums 	= 3		[default = -1];				// 当前集群服务个数
+	optional string  		content 	= 4		[default = ""];  			//	leader广播数据内容
+} 

@@ -1,0 +1,13 @@
+package com.arges.file.proto;    
+
+message ReqBPXAskForBMSAddress
+{
+	optional string  bpxid=1   [default = "default"]; //bpx的ID号
+}
+
+message RspBPXAskForBMSAddress
+{
+	required string bmsip=1   [default = "default"];  //bms的IP地址
+	required int32 bmsport=2  [default = -1];  //bms的监听端口
+	optional string bpxid=3	   [default = "default"];  //bpx的ID号
+}

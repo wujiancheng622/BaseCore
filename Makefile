@@ -20,7 +20,7 @@ SUBPRJ = \
 	Timer \
 	Common \
 	Election \
-	LogBaseCore \
+	#LogBaseCore \
 
 
 SUBPRJ_CLEAN = $(foreach s,$(SUBPRJ),$(s)_clean)

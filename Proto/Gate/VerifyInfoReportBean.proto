@@ -1,0 +1,26 @@
+package com.arges.file.proto; 
+
+message VerifyInfoReport //验证信息报告
+{
+	optional string  deviceid			=	1	[default = "default"];	//所在闸机的deviceid
+	optional string  deviceName			=	2	[default = "default"];	//闸机设备名称
+	optional bytes   picture			=	3	[default = "default"];	//抓拍照
+	optional string  wristid 			= 	4	[default=""];  			//手环id
+	optional string  identificationid 	= 	5 	[default=""];  			//身份证id
+	optional int32   idtype		 		=   6	[default = -1];			//id类型，用来指示deviceMac和identificationid哪一个字段有效  0：表示wristid字段有效  1：表示identificationid字段有效
+	optional int32   result 			=   7	[default = -1];			//验证结果   验证通过为0，验证失败为1
+	optional int32   verifymode 		=   8	[default = -1];			//验证模式  三种验证模式： 刷卡验证:1，人脸验证:2，人证合一验证:3
+	optional float	 compareResult		=	9	[default = 0];			//人脸对比率
+	optional string  filepath			=	10	[default = "default"];	//图片存储路径
+	optional string  picturename		=	11	[default = "default"];	//图片名称
+	optional uint64  time	 			= 	12	[default = 0];			//道闸比对上报时间
+	
+}
+
+
+//刷卡验证模式模式：根据idtype设置deviceMac和identificationid其中一个即可
+//人脸验证模式：	根据idtype设置deviceMac和identificationid其中一个即可，同时设置picture字段为抓拍照
+//人证合一模式：	根据idtype设置deviceMac和identificationid其中一个即可，同时设置picture字段为抓拍照
+
+
+

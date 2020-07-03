@@ -1,0 +1,21 @@
+package com.arges.file.proto;    
+
+message BPXInfo
+{
+	optional string id =1	[default = ""];  			//BPX的ID
+	repeated string keyid =2 ;  			//BPX加载的设备主键
+	optional string ip =3	[default = ""];  //BPX的IP
+	optional int32  port =4 [default = -1];  //BPX的监听端口
+}
+
+
+message BMSHeart {
+    optional string  		term 	= 1			[default = ""];  			//	BMS的当前周期数
+	optional string  		identifier 	= 2		[default = ""];  			//	BMS的唯一标识符
+	optional string  		ip 	= 3				[default = ""];  			//	BMS的IP地址
+	optional int32  		port =4 			[default = -1];  			//	BMS的监听端口
+	repeated BPXInfo        bpxinfo=5 ;
+	optional int32			deviceidnums=6 ;    //当前BMS已经加载的设备总数   
+	optional int32			unLoaddeviceidnums=7 ;   //当前BMS还没有加载的设备总数   
+	repeated string			unLoaddeviceid=8 ;  	 //BMS没有加载的设备列表
+} 

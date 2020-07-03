@@ -1,0 +1,19 @@
+package com.arges.file.proto; 
+message ReportGpsInfo
+{
+	optional int64 	keyId  		= 1 [default=-1];		//主键Id
+	optional string devCode 	= 2 [default=""];		//设备编码
+	optional int32	unitType	= 3 [default=-1];		//通道类型
+	optional int32 	unitSeq		= 4 [default=-1];		//
+	optional int32	channelSeq	= 5 [default=-1];		//通道号
+	optional float	longitude   = 6 [default=0.0]; 		//经度
+	optional float  latitude	= 7 [default=0.0]; 		//纬度
+	optional float 	height		= 8 [default=0.0];		//高度
+	optional float 	angle		= 9 [default=0.0];		//角度
+	optional float 	speed		= 10 [default=0.0];		//速度
+	optional int64  alarmTime	= 11[default=-1];		//时间	
+	optional int32  stars		= 12[default=-1];		//
+	optional int32  antenna		= 13[default=-1];		//
+	optional int32	orientation	= 14[default=-1];		//
+	optional string alarm		= 15[default=""];		//
+}

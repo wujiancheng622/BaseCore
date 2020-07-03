@@ -1,0 +1,10 @@
+package com.arges.file.proto;
+
+message MSDevUpdateFromDIS
+{
+	repeated string deviceId        =   1  ;		//设备id
+	required int32  operation       =   2   [default = -1 ];     //操作(2：申请设备的信息3:修改设备的信息4:获取TMS异常之后留下的设备5:TMS初始化获取设备)
+	required string respurl			=	3	[default = ""];		//MSID,BMS的为QUEUE_BMS_注册id，DMS的为QUEUE_DMS_注册id
+	optional int32  order			=	4	[default = -1 ];		//负载均衡(1.表示取50%.2.表示取30%.3.表示取20%
+	required int32  mstype			=	5	[default = -1 ];		//MS类型 1.表示是DMS 2.表示是VMS 3表示BMS
+}

@@ -1,0 +1,290 @@
+package com.arges.file.proto;
+
+/*	设备状态类型	*/
+enum ONLIEN_STAT_OF_DEVICE
+{
+	DEVICE_IS_ON_LINE				=	1;								//	设备在线
+	DEVICE_IS_OFF_LINE				=	2;								//	设备离线				
+	DEVICE_IS_WAIT_DISTRIBUTE_FOR_DMS	=	3;							//	归属DMS服务异常，等待重新分配
+}
+
+/*	设备登录方式	*/
+enum LOGIN_TYPE_OF_DEVICE
+{
+	LOGIN_TYPE_OF_DAHUA_PRIVATE_PROTOCOL	=	1;						//	大华私有协议接入
+	LOGIN_TYPE_OF_INITIATIVE_REGISTER_FOR_DAHUA	=	6;					//	大华主动注册
+	LOGIN_TYPE_OF_ARGES_PRIVATE_PROTOCAL	=	7;						//	阿启视、海康私有协议和主动注册
+	LOGIN_TYPE_OF_ONVIF						=	9;						//	onvif接入
+	LOGIN_TYPE_OF_GB28181					=	10;						//	国标接入
+}
+
+/*	设备种类	*/
+enum CATEGORY_TYPE_OF_DEVICE
+{
+	CATEGORY_TYPE_OF_INTELLIGENT_DEVICE		=	18;						//	智能设备
+	CATEGORY_TYPE_OF_ALARM_HOST				=	3;						//	报警主机
+	CATEGORY_TYPE_OF_RING_DEVICE			=	9;						//	动环设备
+}
+
+/*	智能设备类型	*/
+enum MODEL_TYPE_OF_INTELLIGENT_DEVICE
+{
+	INTELLIGENT_DEVICE_OF_BBOX				=	1;						//	bBox
+}
+
+/*	报警主机设备类型	
+enum MODEL_TYPE_OF_ALARM_HOST
+{
+	
+}*/
+
+/*	动环设备类型	
+enum MODEL_TYPE_OF_RING_DEVICE
+{
+
+}*/
+
+/*	设备信息*/
+message DeviceInfo
+{
+	optional string	 keyId			= 1	[default = ""];					//主键id
+	optional string  devId 			= 2	[default = ""];  				//DVR编号													-> adm_dev->DEVICE_CODE
+	optional string  provider 		= 3	[default = ""];  				//厂家														-> adm_dev->DEVICE_MANUFACTURER
+	optional string  model 			= 4	[default = ""];  				//型号														-> adm_dev->DEVICE_MODEL
+	optional string  devIp 			= 5	[default = ""];  				//设备IP，支持域名											->adm_dev->DEVICE_IP
+	optional int32   devPort		= 6	[default = -1];              	//设备端口													-> adm_dev->DEVICE_PORT
+	optional string  userName 		= 7	[default = ""];  				//设备的登录用户名											-> adm_dev->LOGIN_NAME
+	optional string  userPsw 		= 8	[default = ""];  				//设备的登录密码											-> adm_dev->LOGIN_PASSWORD
+	optional int32   streamType		= 9	[default = -1];             	//码流类型													->adm_dev_encoder_unit->STREAM_TYPE
+	optional int32   devType		= 10[default = -1];               	//设备类型，见ADDDVRDEVTYPE枚举类							-> adm_dev->DEVICE_TYPE
+	optional int32   proxyPort		= 11[default = 0];          		//代理映射的端口，添加到代理服务、主动注册服务等时有效		->adm_dev->REGIST_PROXY_PORT
+	optional string  registerId 	= 12[default = ""];  				//主动注册的ID，向主动注册服务添加设备时有效				->adm_dev->REGIST_SERVICE_ID
+	optional string  deviceThird 	= 13[default = ""];  				//第三方设备		
+	optional int32   streamMode		= 14[default = -1];        			//流模式，1：直连，2：拉流，3：推流							->adm_dev_decoder_unit->DECODE_MODE
+	optional int32   channelNum		= 15[default = -1];        			//通道总数													->adm_dev_encoder_unit->CHANNEL_NUM
+	optional int32   loginType		= 16[default = -1];        			//ARS (UNIT_ARS)or PCPS(UNIT_PCPS)							-> adm_dev->LOGIN_TYPE
+	optional int32   combineStatus	= 17[default = -1];        			//是否支持融合，1：支持，0：不支持							->adm_dev_decoder_unit->CONBINE_STATUS
+	optional string	 name			= 18[default = ""];					//	设备名称												->adm_dev->DEVICE_NAME
+	optional string	 regId			= 19[default = ""];					//设备所属区域ID						 					->待确认
+	optional string  describe		= 20[default = ""];					//设备描述													->待确认
+	optional int32	 mountMode		= 21[default = -1];					//	设备接入方式，参考MediaBean.proto->ACCESS_TYPE_OF_DEVICE
+	optional string  serviceCode	= 22[default = ""];					//	设备所属DMS的注册ID
+	optional string  upDeviceCode	= 23[default = ""];					//	第一级bBox设备编码，配合mountMode使用
+	optional int32	 devCategory	= 24[default = -1];					//	设备种类												->adm_dev->DEVICE_CATEGORY
+	optional string	 proxyIp		= 25[default = ""];					//	设备代理服务（DPX）的IP
+	optional string  proxyServiceCode = 26[default = ""];				//	设备代理服务的服务编码
+	optional string	 deviceSn		= 27[default = ""];					//	adm_dev->DEVICE_SN
+	optional string	 cascadeDevCode	= 29[default = ""];					//	IPC接bBox下时，IPC物理上级bBox的设备编码
+	optional int32	 isOnlie		= 30[default = -1];					//	设备状态，参考ONLIEN_STAT_OF_DEVICE
+	optional string  cascadeDevDomain	= 31[default = ""];				//	级联上级设备的设备域编码
+	optional string	 devDomain		= 32[default = ""];					//	本身设备的设备域编码
+}
+
+/*	编码通道数据结构	*/
+message EncodeChnnelInfo
+{
+	optional int64		id			=	1	[default = -1];		//	id		->adm_dev_encoder_chn->id
+	optional string		channelId	=	2	[default = ""];		//	通道ID	->adm_dev_encoder_chn->CHANNEL_SN
+	optional string		name		=	3 	[default = ""];		//	通道名称->adm_dev_encoder_chn->CHANNEL_NAME
+	optional string		describe	=	4	[default = ""];		//	描述	->待确认
+	optional string		devCode		=	5	[default = ""];		//	设备编码->adm_dev_encoder_chn->DEVICE_CODE
+	optional int32		channelSeq	=	6	[default = -1];		//	通道号	->adm_dev_encoder_chn->CHANNEL_SEQ
+	optional int32		unitSeq		=	7	[default = -1];		//			->adm_dev_encoder_chn->UNIT_SEQ
+	optional string		type		=	8	[default = ""];		//	通道类型->adm_dev_encoder_chn->CHANNEL_TYPE
+	optional string		cameraType	=	9	[default = ""];		//	设备类型->adm_dev_encoder_chn->CAMERA_TYPE
+	optional string		cameraFunction	=	10	[default = ""];	//			->adm_dev_encoder_chn->CAMERA_FUNCTIONS
+	optional string		gps_x		=	11	[default = ""];		//			->adm_dev_encoder_chn->GPS_X
+	optional string		gps_y		=	12	[default = ""];		//			->adm_dev_encoder_chn->GPS_Y	
+	optional int64		mapId		=	13 	[default = -1];		//			->adm_dev_encoder_chn->MAP_ID
+	optional int64		domainId	=	14	[default = -1];		//			->adm_dev_encoder_chn->DOMAIN_ID
+	optional string		memo		=	15	[default = ""];		//			->adm_dev_encoder_chn->MEMO
+	optional int32		stat		=	16	[default = -1];		//			->adm_dev_encoder_chn->STAT
+	optional string		multicastIp	=	17	[default = ""];		//			->adm_dev_encoder_chn->MULTICAST_IP
+	optional int32		multicastPort	=	18	[default = -1];	//			->adm_dev_encoder_chn->MULTICAST_PORT
+	optional string		ipcIp		=	19	[default = ""];		//			->adm_dev_encoder_chn->IPC_IP
+	optional int32		iconDirection	=	20	[default = -1];	//			->adm_dev_encoder_chn->ICON_DIRECTION
+	optional string		regionCode	=	21	[default = ""];		//	通道所属设备所在的区域编码	->adm_dev->OWNER_CODE
+}
+
+/*	报警主机输入通道信息结构	*/
+message AlarmInChannelInfo
+{
+	optional int64		id			=	1 	[default = -1];		//	ID		->adm_dev_alarmin_chn->ID
+	optional string		devCode		=	2	[default = ""];		//	设备编码->adm_dev_alarmin_chn->DEVICE_CODE
+	optional int32		unitSeq		=	3	[default = -1];		//			->adm_dev_alarmin_chn->UNIT_SEQ
+	optional int32		channelSeq	=	4	[default = -1];		//	通道序号->adm_dev_alarmin_chn->CHANNEL_SEQ
+	optional string		channelName	=	5	[default = ""];		//	通道名称->adm_dev_alarmin_chn->CHANNEL_NAME
+	optional string		alarmType	=	6	[default = ""];		//	报警类型->adm_dev_alarmin_chn->ALARM_TYPE
+	optional string		alarmGrade	=	7	[default = ""];		//	报警等级->adm_dev_alarmin_chn->ALARM_GRADE
+	optional string		gps_x		=	8	[default = ""];		//	gpx_x	->adm_dev_alarmin_chn->GPS_X
+	optional string		gps_y		=	9	[default = ""];		//	gps_y	->adm_dev_alarmin_chn->GPS_Y
+	optional int64		mapId		=	10	[default = -1];		//			->adm_dev_alarmin_chn->MAP_ID
+	optional int64		domainId	=	11	[default = -1];		//	域ID	->adm_dev_alarmin_chn->DOMAIN_ID
+	optional string		memo		=	12	[default = ""];		//	描述	->adm_dev_alarmin_chn->memo
+	optional int32		state		=	13	[default = -1];		//	状态	->adm_dev_alarmin_chn->stat
+}
+
+/*	设备操作类型	*/
+enum OPRATION_TYPE_OF_DEVICE_DO
+{
+	PTZ_WAVER								=	1;							//	摆动
+	PTZ_ROTATE								=	2;							//	转动
+	PTZ_FOCAL								=	3;							//	调焦
+	PTZ_APERTURE							=	4;							//	调光圈
+	PTZ_STOP                                =   5;	                        //  停止
+	PTZ_LEFT                                =   6;	                        //  左
+	PTZ_TOP                                 =   7;	                        //  上
+	PTZ_RIGHT                               =   8;	                        //  右
+	PTZ_BOTTOM                              =   9;	                        //  下
+	PTZ_TOPLEFT                             =   10;	                        //  左上
+	PTZ_TOPRIGHT                            =   11;	                        //  右上
+	PTZ_BOTTOMLEFT                          =   12;	                        //  左下
+	PTZ_BOTTOMRIGHT                         =   13;	                        //  右下
+}
+
+/*	设备控制请求类型	*/
+enum REQUEST_TYPE_OF_DEVICE_CONTROL
+{
+	DEVICE_CONTROL_REQUEST					=	1;							//	设备控制请求
+	DEVICE_CONTROL_GET_DEVICE_INFO			=	2;							//	获取被控制设备的设备信息
+	DEVICE_CONTROL_RSP_DEVICE_INFO			=	3;							//	响应设备信息给控制请求
+}
+
+/*	设备过程响应类型	*/
+enum RESULT_TYPE_OF_DEVICE_CONTROL
+{
+	DEVICE_CONTROL_IS_OK					=	1;							//	正常
+	DEVICE_CONTROL_GET_DEVICE_INFO_IS_TRUE	=	2;							//	设备控制，获取设备信息请求成功
+	DEVICE_CONTROL_GET_DEVICE_INFO_ERROR	=	3;							//	设备控制，获取设备信息异常
+}
+
+/*	设备控制命令	*/
+message	ReqDeviceOpr
+{
+	optional string			devCode			=	1	[default = ""];			//	设备编码
+	optional string			channelId		=	2	[default = ""];			//	设备通道号
+	optional int32			devType			=	3	[default = -1];			//	设备类型
+	optional int32			mountType		=	4	[default = -1];			//	挂载方式，参考：MediaBean.proto->ACCESS_TYPE_OF_DEVICE
+	optional string			serviceId		=	5	[default = ""];			//	设备归属DMS服务注册ID
+	optional string			upDeviceCode	=	6	[default = ""];			//	上级设备编码
+	optional int32			doType			=	7	[default = -1];			//	设备操作类型，参考：OPRATION_TYPE_OF_DEVICE_DO
+	optional int64			stepWith		=	8	[default = -1];			//	横向步长，云台使用
+	optional int64			stepHight		=	9	[default = -1];			//	纵向步长，云台使用
+	optional string			cascadeDevDomain	=	10	[default = ""];		//	设备域编码
+	optional int32			reqestType		=	11	[default = -1];			//	请求类型，参考REQUEST_TYPE_OF_DEVICE_CONTROL
+	optional string	 		proxyIp			= 	12	[default = ""];			//	设备代理服务（DPX）的IP
+	optional int32	 		proxyPort		= 	13	[default = 0];			//	设备代理服务（DPX）的IP
+	optional string  		proxyServiceCode= 	14	[default = ""];			//	设备代理服务的服务编码
+	optional int32			result			=	15	[default = -1];			//	结果
+	optional string			resultDescirbe	=	16	[default = ""];			//	结果描述
+}
+
+enum STAT_TYPE_OF_DEVICE
+{
+	DEVICE_IS_ONLINE						=	1;							//	在线
+	DEVICE_IS_OFFLINE						=	2;							//	离线
+}
+
+/*	上报设备状态	*/
+message ReportDeviceStatus
+{
+	optional string		code				=	1	[default = ""];			//	设备编码
+	optional int32		stat				=	2	[default = -1];			//	设备状态，参考：STAT_TYPE_OF_DEVICE
+	repeated ChannelStat	channels 		=	3;				
+	optional string		cascadeDevDomain	=	4	[default = ""];			//	设备域编码
+	optional string		devIp				=	5	[default = ""];			//	设备IP
+	optional int32		devPort				=	6 	[default = 0];			//	设备端口
+	/*	设备通道状态	*/
+	message ChannelStat
+	{
+		optional string		code			=	1	[default = ""];			//	通道编码
+		optional int32		seq				=	2	[default = -1];			//	通道序号
+		optional int32		stat			=	3	[default = -1];			//	通道状态
+	}
+}
+
+/*	设备通道请求类型	*/
+enum OPRATION_TYPE_OF_CHANNEL_INFO
+{
+	ENCODE_CHANNEL_GET_ALL					=	1;							//	获取所有
+	ENCODE_CHANNEL_GET_GEGION_ALL			=	2;							//	获取区域下所有通道信息
+	ENCODE_CHANNEL_GET_BY_REGION			=	3;							//	获取区域本级的设备通道新
+}
+
+/*	获取通道信息请求	*/
+message ReqEncodeChannelInfo
+{
+	repeated string 	channelId			=	1;							//	根据通道ID获取通道信息
+	repeated string		regionCode			=	2;							//	获取区域下设备通道信息
+	optional int32		type				=	3;							//	操作类型，参考：
+}
+
+/*	响应编码通道信息请求	*/
+message RspEncodeChannelInfo
+{
+	optional int32		requestType 		=	1;							//	请求类型，参考OPRATION_TYPE_OF_DEVICE
+	optional int32		result				=	2;							//	结果响应，参考RESULT_TYPE_OF_DEVICE_INFO_REQUEST
+	optional bytes		resultDescirbe		=	3;							//	结果描述
+	repeated EncodeChnnelInfo	infos		=	4;							//	通道信息
+}
+
+/*	报警请求类型	*/
+enum REQUEST_TYPE_OF_ALARM_CHANNEL
+{
+	ALARM_CHANNEL_REQUEST_GET_BY_REGION_CODE	=	1;						//	按照组织编码获取报警通道信息
+}
+
+/*	报警通道消息	*/
+message AlarmChannelMassage
+{
+	optional int32		requestType 		=	1;							//	请求类型，参考OPRATION_TYPE_OF_DEVICE
+	optional int32		result				=	2;							//	结果响应，参考RESULT_TYPE_OF_DEVICE_INFO_REQUEST
+	optional bytes		resultDescirbe		=	3;							//	结果描述
+	repeated AlarmInChannelInfo	channels	=	4;							//	通道信息
+}
+
+message DeviceInfoList
+{
+	repeated DeviceInfo deviceinfo			=	1;
+}
+
+/*	设备请求类型	*/
+enum OPRATION_TYPE_OF_DEVICE
+{
+	DEVICE_INFO_GET_ALL						=	1;							//	获取所有
+	DEVICE_INFO_GET_BY_REGION_ALL			=	2;							//	获取区域下所有
+	DEVICE_INFO_GET_BY_REGION 				=	3;							//	获取区域下本级的设备信息
+	DEVICE_INFO_GET_BY_IDS					=	4;							//	根据ID获取设备信息
+	DEVICE_ADD								=	5;							//	添加设备
+	DEVICE_INFO_MODIFY						=	6;							//	修改设备
+	DEVICE_DELETE							=	7;							//	删除设备
+	DEVICE_INFO_GET_BY_CHANNEL_CODE			=	8;							//	根据通道编码获取设备信息
+	DEVICE_INFO_GET_BY_CODES				=	9;							//	根据设备编码列表获取设备信息
+	DEVICE_UPDATE_DMS_INFO					=	10;							//	设备更新所属DMS服务信息
+}
+
+/*	请求获取设备信息	*/
+message ReqDeviceInfo
+{
+	optional int32		type 				=	1	[default = -1];			//	请求类型，参考
+	repeated string		deviceId			=	2;							//	设备ID
+	repeated string		regionCode			=	3;							//	区域
+	optional string		channelCode			=	4;							//	设备通道编码
+	optional string		serviceCode			=	5;							//	设备所属DMS服务注册ID
+}
+
+/*	设备信息请求结果	*/
+enum RESULT_TYPE_OF_DEVICE_INFO_REQUEST
+{
+	DEVICE_RESPONSE_IS_OK					=	1;							//	正常
+	DEVICE_RESPONSE_IS_ERROR				=	2;							//	异常响应结果
+}
+
+/*	设备信息响应	*/
+message RspDeviceInfo
+{
+	optional int32		requestType			=	1;
+	repeated DeviceInfo devs				=	2;
+	optional int32		result				=	3	[default = -1];			//	结果响应
+	optional bytes		resultDescirbe		=	4	[default = ""];			//	结果描述
+}

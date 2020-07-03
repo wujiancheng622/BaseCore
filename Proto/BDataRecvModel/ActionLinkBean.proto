@@ -1,0 +1,105 @@
+package com.arges.file.proto; 
+import "DevInfoListBean.proto" ;
+
+/*	联动抓图请求类型	*/
+enum REQUEST_TYPE_OF_PICTURE_LINK
+{
+	PICTURE_LINK_GET_DEV_INFO				=	1;								//	获取抓图IPC设备信息
+	PICTURE_LINK_GET_PICTURE				=	2;								//	抓图请求
+}
+
+/*	抓图联动消息	*/
+message PictureLinkMassage
+{
+	optional string 	ip					=	1	[default = ""];				//	取流ip
+	optional int32		port				=	2	[default = 0];				//	取流port
+	optional string		token				=	3	[default = ""];				//	取流会话token
+	optional int32		requestType			=	4	[default = -1];				//	请求类型，参考：
+	optional string		devicecode			=	5	[default = ""];				//	采集设备ID（28181设备的用户名）
+	optional string		wristmac			=	6	[default = ""];				//  手环mac
+	optional uint64		time				=	7	[default = 0];				//  时间戳
+	optional DeviceInfo	devInfo				=	8;								//	DMS设备信息
+	optional string  	capture1			=	9	[default = ""];				//	联动动作需要保存的图片
+	optional string		capture2			=	10	[default = ""];				//  联动动作需要保存的图片
+	optional string 	capture3			=	11	[default = ""];				//  联动动作需要保存的图片
+}
+
+/*	音频循环播放标志	*/
+enum LOOP_TYPE_OF_SOUND_LINK
+{
+	SOUND_LINK_NOT_LOOP_PLAY				=	0;								//	不循环播放
+	SOUND_LINK_LOOP_PLAY					=	1;								//	循环播放
+}
+
+/*	联动音频数据结构	*/
+message SoundLinkData
+{
+	optional int64		alarmType			=	1	[default = -1];				//	报警类型	->adm_alarm_type->ID
+	optional string		name				=	2	[default = ""];				//	联动名称
+	optional string		file				=	3	[default = ""];				//	联动音频文件名
+	optional int32		isLoop				=	4	[default = 0];				//	循环播放，参考LOOP_TYPE_OF_SOUND_LINK
+}
+
+/*	灯光自动启动标识	*/
+enum AUTO_TYPE_OF_LIGHT_LINK
+{
+	LIGHT_LINK_IS_NOT_AUTO_OPEN				=	0;								//	不自动开启
+	LIGHT_LINK_IS_AUTO_OPEN					=	1;								//	自动开启
+}
+
+/*	联动灯光数据结构	*/
+message LightLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		channelCode			=	3	[default = ""];				//	通道编号，如：1000014$3$0$0
+	optional int64		stayTime			=	4 	[default = 0];				//	持续时间
+	optional int32		autoOpen			=	5	[default = -1];				//	自动启动标志，参考AUTO_TYPE_OF_LIGHT_LINK
+	optional string		devName				=	6	[default = ""];				//	设备名称
+}
+
+/*	联动视频数据结构	*/
+message VideoLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		channelCode			=	3 	[default = ""];				//	通道编号，如：1000014$3$0$0
+	optional int64		stayTime			=	4 	[default = 0];				//	持续时间
+	optional string		prepoint			=	5 	[default = ""];				//	前置点
+	optional string		devName				=	6	[default = ""];				//	设备名称
+}
+
+/*	联动email	*/
+message EmailLinkData
+{
+	optional int64		id					=	1	[default = -1];				//	ID
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		subject				=	3	[default = ""];				//	主题
+	optional string		content				=	4	[default = ""];				//	内容
+}
+
+/*	联动录像	*/
+message RecordLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID
+	optional int64		ruleId				=	2	[default = -1];				//	规则ID
+	optional int64		recordTime			=	3 	[default = 0];				//	录像时间
+	optional int64		preRecordTime		=	4	[default = 0];				//	预先录音时间
+	optional int32		assistantStream		=	5	[default = -1];				//	辅码流
+}
+
+/*	联动短信	*/
+message SmsLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		content				=	3 	[default = ""];				//	短信内容
+}
+
+/*	联动上墙	*/
+message TvwallLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64 		ruleId				=	2 	[default = -1];				//	规则ID
+	optional int64		planId				=	3	[default = -1];				//	电视墙预案ID
+}

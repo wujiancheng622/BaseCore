@@ -1,0 +1,40 @@
+ARCH = X86_64;
+LIB = Lib64;
+ifeq ($(shell getconf LONG_BIT), 32)
+    ARCH = I386
+	LIB = Lib32
+else
+    ARCH = X86_64
+	LIB = Lib64
+endif
+
+ALL:
+	make -f ./BMS/Makefile
+	make -f ./Common/Makefile
+	make -f ./BPX/Makefile
+	make -f ./BDataRecvModel/Makefile
+	make -f ./FaceCall/Makefile
+	make -f ./LeaderElection/Makefile
+	make -f ./TMS/Makefile
+	make -f ./Gate/Makefile 
+	cp -rf ./$(LIB)/* ../$(LIB)
+	
+	
+clean:
+	rm ./$(LIB)/*
+	rm ../$(LIB)/libbmsproto.so
+	rm ../$(LIB)/libbpxproto.so
+	rm ../$(LIB)/libcommonproto.so
+	rm ../$(LIB)/libElectionCoreBase.so
+	rm ../$(LIB)/libElectionCoreBaseAr.a
+	rm ../$(LIB)/libfacecallproto.so
+	rm ../$(LIB)/libhmmodelproto.so
+	rm ../$(LIB)/libtmsproto.so
+	rm ../$(LIB)/libgateproto.so
+	
+cleanCurDir:
+	make -f ./BMS/Makefile clean
+	make -f ./Common/Makefile clean
+
+	
+

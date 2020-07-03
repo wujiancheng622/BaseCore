@@ -1,0 +1,7 @@
+package com.arges.file.proto;    
+
+message DeviceStatusEventReport {
+    optional string		deviceid	= 1		[default = "default"];	//  设备的id号
+    optional int32		channel		= 2		[default = -1];			//	设备的通道号
+    optional int32		statustype 	= 5		[default = -1];			//	0：离线 1：在线 102：布防 103：旁路 104：撤防
+} 

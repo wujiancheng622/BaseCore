@@ -15,16 +15,22 @@ DEPEND_PATH					=../../../../Depend
 
 CFLAGS += \
 	-I../ \
-	-I$(DEPEND_PATH)/BaseCore/Threads \
-	-I$(DEPEND_PATH)/BaseCore/Common \
-	-I$(DEPEND_PATH)/BaseCore/LogBaseCore/$(ARCH)/include \
+	-I$(DEPEND_PATH)/BaseCore/LogBaseCore/ \
+	-I$(DEPEND_PATH)/BaseCore/Common/ \
+	-I$(DEPEND_PATH)/BaseCore/Threads/ \
+	-I$(BOOST_PATH)/include \
+	-I /home/wujiancheng/github/Depend/argeslog4cplus/X86_64/include/include_log4cplus \
 		
 LDFLAGS += \
-	-I$(DEPEND_PATH)/BaseCore/LogBaseCore/$(ARCH)/lib \
 	-L$(DEPEND_PATH)/BaseCore/$(LIB) \
-	-L/mnt/hgfs/SVN-2/TPX/Src/code/Depend/argeslog4cplus/X86_64/lib \
+	-L$(DEPEND_PATH)/argeslog4cplus/$(ARCH)/lib \
+	-L$(BOOST_PATH)/lib \
 	-llog4cplus \
 	-lLogCoreBase \
+	-lThreadCoreBase \
+	-lboost_system \
+	-lboost_thread \
+	-lboost_chrono \
 	
 TARGET=test	
 	

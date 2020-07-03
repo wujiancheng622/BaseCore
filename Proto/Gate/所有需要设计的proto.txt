@@ -1,0 +1,16 @@
+这里的proto不仅仅涉及到和GateClient的交互同时也涉及到TPX其他模块比如ETS的交互
+
+
+
+1：首先是设备信息的下发，设备信息的protobuf采用DevInfoListBean.proto即可
+然后我这边连接GateClient直接通过设备信息中的ip和端口去连接。
+
+
+
+5：平常进出轧机时GateClient在验证成功的抓拍照和唯一标识符上报给TPX,TPX再转发给ETS.
+
+
+
+
+
+

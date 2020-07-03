@@ -1,0 +1,8 @@
+package com.arges.file.proto;    
+
+message ResponseVoteRpc  {
+    optional string  		term 	= 1		[default = ""];  			//	
+	optional string  		srcIdentifier 	= 2		[default = ""];  			//	
+	optional string  		desIdentifier 	= 3		[default = ""];  			//	
+	
+} 

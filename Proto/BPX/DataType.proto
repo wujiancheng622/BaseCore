@@ -1,0 +1,329 @@
+package com.arges.file.proto;  
+
+/*	消息类型:	最后1 字节 表示消息类型::		0:请求	1:响应	2: 通知	3：上报*/
+enum DATA_TYPE 
+{
+	/*	小米手环命令	*/
+	REQ_WRITE_WRISTBAND_DATA			=	0x100000;			//	写入小米手环数据
+	RSP_WRITE_WRISTBAND_DATA			=	0x100001;			//	
+	REQ_SAVE_CAPTURE_FOR_ALARM			=	0x100010;			//	保存报警抓图图片请求
+	RSP_SAVE_CAPTURE_FOR_ALARM			=	0x100011;			//	
+	REQ_WRITE_DATE_FOR_CAPTUR_MATCH		=	0x100020;			//	写入报警图片匹配数据
+	RSP_WRITE_DATE_FOR_CAPTUR_MATCH		=	0x100021;			//	
+	REQ_ADD_SCANNER_DEVICE				=	0x100030;			//	废弃	->	使用BServer 设备相关的Type
+	RSP_ADD_SCANNER_DEVICE				=	0x100031;			//	废弃
+	REQ_UPDATE_SCANNER_DEVICE			=	0x100040;			//	废弃
+	RSP_UPDATE_SCANNER_DEVICE			=	0x100041;			//	废弃
+	REQ_DELETE_SCANNER_DEVICE			=	0x100050;			//	废弃
+	RSP_DELETE_SCANNER_DEVICE			=	0x100051;			//	废弃
+	REQ_ADD_WRISTAND_DEVICE		    	=	0x100060;			//	添加手环白名单
+	RSP_ADD_WRISTAND_DEVICE				=	0x100061;			//	
+	REQ_DELETE_WRISTAND_DEVICE			=	0x100070;			//	删除手环白名单
+	RSP_DELETE_WRISTAND_DEVICE			=	0x100071;			//	
+	REQ_CLEARALL_WRISTAND_DEVICE		=	0x100080;			//  清空手环白名单
+	RSP_CLEARALL_WRISTAND_DEVICE		=	0x100081;			//	
+	REQ_INTO_MEETING					=	0x100090;			//	web会议通知请求
+	RSP_INTO_MEETING					=	0x100091;			//
+	REQ_UPDATE_WRISTAND_DEVICE			=	0x1000a0;			//  修改手环白名单
+	RSP_UPDATE_WRISTAND_DEVICE			=	0x1000a1;			//
+//	NOTICE_WHITE_USER_LIST				=	0x1000b2;			/	通知白名单信息
+	REQ_STOP_MEETING					=	0x1000c0;				//	web通知停止会议请求
+	RSP_STOP_MEETING					=	0x1000c1;				//
+	REQ_DELETE_MEETING					=	0x1000d0;				//	web通知删除会议请求
+	RSP_DELETE_MEETING					=	0x1000d1;
+	//
+	/*	电视墙命令	*/
+	REQ_KPS_REGISTER					=	0x101000; 			//	键盘注册
+	RSP_KPS_REGISTER					=	0x101001;			//	
+	REQ_KPS_UNREGISTER					=	0x101010;			//	键盘注销
+	RSP_KPS_UNREGISTER					=	0x101011;			//
+	REQ_KPS_LOGIN						=	0x101020;			//	键盘登录
+	RSP_KPS_LOGIN						=	0x101021;			//	
+	REQ_KPS_LOGOUT						=	0x101030;			//	键盘登出
+	RSP_KPS_LOGOUT						=	0x101031;			//	
+	REQ_KPS_TVWALL						=	0x101040;			//	老版本电视墙使用的命令
+	RSP_KPS_TVWALL						=	0x101041;			//	
+	REQ_TVWALL_PLAN						=	0x101050;			//	请求电视墙预案
+	RSP_TVWALL_PLAN						=	0x101051;			//
+	REQ_TVWALL_TASK						=	0x101060;			//	请求电视墙任务
+	RSP_TVWALL_TASK						=	0x101061;			//	
+	REQ_TVWALL_NEW						=	0x101070;			//	请求视频上墙，新版本使用
+	RSP_TVWALL_NEW						=	0x101071;			//
+	REQ_TVWALL_PLAN_SYNC				=	0x101080;			//	请求预案同步
+	RSP_TVWALL_PLAN_SYNC				=	0x101081;			//	
+	REQ_TVWALL_FUNCTION					=	0x101090;			//	启动/关闭电视墙功能（轮询等）
+	RSP_TVWALL_FUNCTION					=	0x101091;			//	
+	/*		*/				
+	/*	小米感知器	*/
+	REQ_HM_CollectorData						=	0x102000;			//	
+	RSP_HM_CollectorData						=	0x102001;			//	
+	/*	视频广场下载视频	*/
+	REQ_VIDEO                       			=   0x103000; 			//	请求录像
+	RSP_VIDEO									=	0x103001;			//
+	REQ_VIDEO_PROGRESS							=	0x103010;			//	请求录像进度
+	RSP_VIDEO_PROGRESS							=	0x103011;			//	
+	REQ_LOGIN_PTZ				    			=	0x103020;			//	登录到平台mq服务
+	RSP_LOGIN_PTZ								=	0x103021;			//	
+	REQ_LOGINOUT_PTZ							=	0x103030;			//	登出平台mq服务
+	RSP_LOGINOUT_PTZ							=	0x103031;			//
+	/*	人脸识别服务	*/
+	REQ_FACE_REGONI                 			=   0x104000;          	//  	请求人脸识别服务
+	RSP_FACE_REGONI								=	0x104001;			//	
+	REQ_FACE_VEDIO                  			=   0x104010;          	//  	请求人脸识别录像
+	RSP_FACE_VEDIO								=	0x104011;			//
+	/*	cassandra数据中心服务*/
+	REQ_INSERT_WRISTBAND_TO_REAL_CHART			=	0x105000;		//	小米手环数据写入到实时表
+	RSP_INSERT_WRISTBAND_TO_REAL_CHART		=	0x105001;			//	
+	REQ_INSERT_WRISTBAND_TO_HISTORY			=	0x105010;			//	小米手环数据写入到历史表
+	RSP_INSERT_WRISTBAND_TO_HISTORY			=	0x105011;			//
+	REQ_INSERT_ACTION_RECORD					=	0x105020;		//	插入联动记录(签到图片数据写入到联动表和更新匹配图片数据到联动表)
+	RSP_INSERT_ACTION_RECORD					=	0x105021;		//	
+	REQ_SELECT_PICTURE_OF_WRISTBAND 			= 	0x105050;		//	请求查询证件照
+	RSP_SELECT_PICTURE_OF_WRISTBAND				=	0x105051;		//	响应查询证件照
+	REQ_WRITE_RECORD_OF_VSQUARE 				= 	0x105060;		//	写入视频图片名称数据
+	
+	REQ_WRITE_SERVER_ROLE_DATA					=	0x105170;		//	请求写入集群服务角色分配信息
+	RSP_WRITE_SERVER_ROLE_DATA					=	0x105171;
+	REQ_SIGNIN_DATA_OF_PHOTO					=	0x105180;		//	请求查询历史签到用户头像信息
+	RSP_SIGNIN_DATA_OF_PHOTO					=	0x105181;		//	
+	REQ_SIGNIN_PHOTO_FOR_REAL					=	0x105190;		//	请求实时手环用户头像
+	RSP_SIGNIN_PHOTO_FOR_REAL					=	0x105191;
+	REQ_HOT_MAP_DATA							=	0x1051a0;		//	请求热力图数据
+	RSP_HOT_MAP_DATA							= 	0x1051a1;
+
+	/* DIS				*/	
+	REQ_UPDATE_DEV_FOR_SCANNER					=	0x106000;		//	增删改查 扫描器设备信息
+	RSP_UPDATE_DEV_FOR_SCANNER					=	0x106001;		//	
+	REQ_DEV_INFO_FROM_DIS						=	0x106010;		//	向DIS获取设备信息											------------->未完成
+	RSP_ADD_DEV_INFO_TO_BMS						=	0x106011;			//	
+	REQ_TMS_INFO_FROM_SIS						=	0x106020;		//  	DIS向SIS获取所有的TMS服务信息	
+	RSP_TMS_INFO_FROM_SIS						=	0x106021;		//	
+	REQ_TMS_URL_FROM_DIS_BY_DEV_CODE			=	0x106030;		//	向DIS获取设备对应的TMS信息	
+	RSP_TMS_URL_FROM_DIS_BY_DEV_CODE			=	0x106031;		//	
+	
+	REQ_OWNERSHIP_FOR_DEVICE					=	0x106040;		//	设备-服务归属查询；设备归属于哪个DMS和设备的挂载方式
+	RSP_OWNERSHIP_FOR_DEVICE					=	0x106041;		//	
+	REQ_ADD_DEVICE								=	0x106050;		//	添加设备
+	RSP_ADD_DEVICE								=	0x016051;
+	REQ_MODIFY_DEVICE							=	0x106060;		//	修改设备
+	RSP_MODIFY_DEVICE							=	0x106061;		//	
+	REQ_DELETE_DEVICE							=	0x106070;		//	删除设备
+	RSP_DELETE_DEVICE							=	0x106071;		//	
+	REQ_DISTRIBUTE_DEVICE						=	0x106080;		//	请求设备分配
+	RSP_DISTRIBUTE_DEVICE						=	0x106081;		//	
+	REQ_ADD_BUSINESS_ORGANIZATION				=	0x106090;		//	添加业务组织
+	RSP_ADD_BUSINESS_ORGANIZATION				=	0x106091;		//	
+	REQ_UPDATE_BUSINIESS_ORGANIZATION			=	0x1060a0;		//	修改业务组织
+	RSP_UPDATE_BUSINIESS_ORGANIZATION			=	0x1060a1;		//	
+	REQ_DELETE_BUSINIESS_ORGANIZATION			=	0x1060b0;		//	删除业务组织
+	RSP_DELETE_BUSINIESS_ORGANIZATION			=	0x1060b1;		//	
+	REPORT_DEVICE_MODIFY						=	0x1060c3;		//	设备变更上报给客户端
+	/*	DCenter	*/
+	REQ_BMS_DEV_INFO_FROM_DC					=	0x107000;			//	请求BMS设备信息		--->	废弃
+	RSP_BMS_DEV_INFO_FROM_DC					=	0x107001;			//	
+	REQ_GET_ALARM_PLAN							=	0x107010;			//	获取报警预案
+	RSP_GET_ALARM_PLAN							=	0x107011;			//	
+	REQ_GET_SIGNIN_PIC_CODE						=	0x107020;			//	获取签到IPC编码
+	RSP_DEV_INFO_FOR_SIGN_IN					=	0x107021;			//	
+	REQ_DMS_DEV_INFO_FROM_DC					=	0x107030;			//	请求DMS设备信息		--->	废弃
+	RSP_DMS_DEV_INFO_FROM_DC					=	0x107031;			//	
+	REQ_ORGANIZATION							=	0x107040;			//	请求获取组织节点：组织节点包括 区域、编码通道等信息
+	RSP_ORGANIZATION							=	0x107041;			//	
+	REQ_ENCODE_CHANNEL_INFO						=	0x107050;			//	请求编码通道信息
+	RSP_ENCODE_CHANNEL_INFO						=	0x107051;			//	
+	REQ_REGION_INFO								=	0x107060;			//	请求区域信息
+	RSP_REGION_INFO								=	0x107061;			//	
+	REQ_DEVICE_INFO								=	0x107070;			//	获取设备信息
+	RSP_DEVICE_INFO								=	0x107071;			//	
+	REQ_SERVICE_INFO_FOR_REGISTER				=	0x107080;			//	请求注册服务信息
+	RSP_SERVICE_INFO_FOR_REGISTER				=	0x107081;			//	
+	REQ_RECODE_FOR_ATTENDANCE					=	0x107090;			//	考勤首次入库
+	RSP_RECODE_FOR_ATTENDANCE					=	0x107091;			//	
+	REQ_USER_DOMAIN								=	0x1070a0;			//	请求用户域信息
+	RSP_USER_DOMAIN								=	0x1070a1;			//	
+	REQ_SERVICE_REGISTER						=	0x1070b0;			//	MySQL注册信息修改
+	RSP_SERVICE_REGISTER						=	0x1070b1;			//	
+	REQ_DOMAIN_FOR_DEVICE						=	0x1070c0;			//	设备所属用户域
+	RSP_DOMAIN_FOR_DEVICE						=	0x1070c1;			//	
+	REQ_GET_WRISTUSER_NAME						=	0x1070d0;			//	请求查询手环用户姓名
+	RSP_GET_WRISTUSER_NAME						=	0x1070d1;			//	
+	REQ_GET_MEETING_DATA						=	0x1070e0;			//	请求会议信息
+	RSP_GET_MEETING_DATA						=	0x1070e1;			//	
+	REQ_DATA_FOR_RAISE_DUST						=	0x1070f0;			//	请求扬尘数据
+	RSP_DATA_FOR_RAISE_DUST						=	0x1070f1;			//	
+	REPORT_DATA_FOR_RAISE_DUST					=	0x1070f3;			//	扬尘设备数据上报
+	REQ_INSERT_SIGNIN_RECORD					=	0x107100;			//	写入手环签到数据
+	RSP_INSERT_SIGNIN_RECORD					=	0x107101;			//	
+	REQ_GET_RECORD_OF_SIGN_IN					=	0x107110;			//	请求获取签到记录
+	RSP_GET_RECORD_OF_SIGN_IN					=	0x107111;			//	
+	REQ_INSERT_ALARM_OF_RAISE_DUST				=	0x107120;			//	请求扬尘报警入库
+	RSP_INSERT_ALARM_OF_RAISE_DUST				=	0x107121;			//	
+	REQ_ALARM_PLAN_OF_RAISE_DUST				=	0x107130;			//	请求获取扬尘报警预案
+	RSP_ALARM_PLAN_OF_RAISE_DUST 				=	0x107131;			//	
+	REQ_UPDATE_DEVICE_INFO						=	0x107140;			//	请求更新设备信息
+	RSP_UPDATE_DEVICE_INFO						=	0x107141;			//	
+	REQ_ALARM_TYPE								=	0x107150;			//	请求报警类型
+	RSP_ALARM_TYPE								=	0x107151;			//	
+	REQ_ACTION_TYPE								=	0x107160;			//	请求联动动作类型
+	RSP_ACTION_TYPE								=	0x107161;			//	
+	REQ_GET_WRISTUSER_DATA						=	0x107170;			//	请求获取手环用户信息
+	RSP_GET_WRISTUSER_DATA						= 	0x107171;
+	REQ_MEETING_ALL								=	0x107180;			//	获取所有会议信息
+	RSP_MEETING_ALL								=	0x107181;			//	
+	REQ_UPDATE_ATTENDANCE						=	0x107190;			//	更新考勤
+	RSP_UPDATE_ATTENDANCE						=	0x107191;			//		
+	
+
+	/*	SIS	*/
+	REQ_SERVICE_INFO_FROM_SIS					=	0x108000;			//	获取服务信息
+	RSP_SERVICE_INFO_FROM_SIS					=	0x108001;			//	
+	PUSH_EXCEPTION_SERVICE_INFO_FROM_SIS		=	0x108010;			//	SIS推送服务消息			---	废弃
+	SUBSCRIBE_SERVICE_INFO_FROM_SIS				=	0x108011;			//	订阅服务信息；定时推送	---	废弃
+	REQ_REGISTER_TO_SIS							=	0x108020;			//	通过SIS向平台注册
+	RSP_REGISTER_FROM_SIS						=	0x108021;			//	
+	REQ_LOGOUT_FOR_SERVICE						=	0x108030;			//	服务注销请求
+	RSP_LOGOUT_FOR_SERVICE						=	0x108031;			//	服务注销响应
+	PUSH_MS_INFO_FROM_SIS						=	0x108042;			//	推送BMS更改信息  	---	废弃
+	//	...
+	REQ_SERVICE_INFO							=	0x108050;			//	请求服务信息
+	RSP_SERVICE_INFO							=	0x108051;			//	
+	REQ_SERVICE_MODIFY							=	0x108060;			//	请求服务更新
+	RSP_SERVICE_MODIFY							=	0x108061;			//	
+	/*	BServer	*/	
+	REQ_ADD_DEVICE_FROM_BSERVER				=	0x109000;			//	增加设备	
+	RSP_ADD_DEVICE_FROM_BSERVER				=	0x109001;			//	
+	REQ_UPDATE_DEVICE_FROM_BSERVER			=	0x109010;			//	更新设备
+	RSP_UPDATE_DEVICE_FROM_BSERVER			=	0x109011;			//	
+	REQ_DELETE_DEVICE_FROM_BSERVER 			=	0x109020;			//	删除设备
+	RSP_DELETE_DEVICE_FROM_BSERVER			=	0x109021;			//	
+	REQ_ADD_ALARMTHRESHOLD_FROM_BSERVER			=	0x109031;			//添加扬尘噪音设备的环境参数阈值
+	REQ_UPDATE_ALARMTHRESHOLD_FROM_BSERVER			=	0x109032;			//修改扬尘噪音设备的环境参数阈值
+	REQ_DELETE_ALARMTHRESHOLD_FROM_BSERVER			=	0x109033;			//删除扬尘噪音设备的环境参数阈值
+
+	/* TMS服务 */
+	REQ_BMS_TO_LEADER_HEART					=	0x10a000;  			//	BMS给Leader发送的心跳包
+	//
+	REQ_LEADER_TO_FOLLOWER_BROADCAST			=	0x10a010;  			//	BMS Leader给Follower 发送的广播
+	//
+	REQ_REQUESTVOTE_RPC						=	0x10a020;  			//	BMS向其他BMS	请求获取选票
+	//
+	REQ_RESPONEVOTE_RPC						=	0x10a030;  			//	BMS给其他BMS发送同意选票 
+	//	
+	REQ_ADDDEV_TO_BPX							=	0x10a040;			//	BMS给BPX发送添加设备命令
+	//	
+	REQ_DELDEV_TO_BPX							=	0x10a050;			//	BMS给BPX发送删除设备命令
+	//
+	REQ_MODIFYDEV_TO_BPX						=	0x10a060;			//	BMS给BPX发送修改设备命令
+	//	
+	REQ_OPERATORDEV_TO_BPX					=	0x10a070;			//	BMS给BPX发送操作设备命令
+	//	
+	REQ_BMS_ACCEPT_BPX						=	0x10a080;			//	BMS接收到一个BPX连接后会把与之对应的socket 句柄hHandle发送给BPX
+	//
+	REQ_BPX_CONNECT_TO_BMS					=	0x10a090;  			//	BPX在收到BMS发送过来的REQ_BMS_ACCEPT_BPX会把自己的UUDID等信息连同hHandle回复给BMS
+	//	
+	REQ_BMS_ADD_DEVICE						=	0x10a0a0;  			//	BMS添加从web上配置的新设备
+	//	
+	REQ_BMS_DEL_DEVICE							=	0x10a0b0; 			//	BMS删除从web上配置的设备
+	//	
+	REQ_BMS_UPDATE_DEVICE						=	0x10a0c0;  			//	BMS跟新web上配置的设备
+	NOTICE_NOISE_THRESHOLD_OF_RAISE				=	0x10a0d2;			//	下发扬尘噪声阈值
+	REPORT_NOISE_ALARM_OF_RAISE					=	0x10a0d3;			//	上报扬尘噪声报警
+	/* CASPROXY服务*/
+	REQ_CASPROXY_LOGIN							=	0x10b000;			//	向CAS Server初次登录
+	RSP_CASPROXY_LOGIN							=	0x10b001;			//	
+	REQ_CASPROXY_LOGOUT						=	0x10b010;			//  	登出CAS Server
+	RSP_CASPROXY_LOGOUT						=	0x10b011;			//	
+	/*	DMS	*/
+	REQ_MEDIA								=	0x10c000;			//	取流请求
+	RSP_MEDIA								=	0x10c001;			//	
+	REQ_CONTROL_FOR_DEVICE					=	0x10c020;			//	请求设备控制
+	RSP_CONTROL_FOR_DEVICE					=	0x10c021;			//	
+	REPORT_STATUS_FOR_DEVICE				=	0x10c033;			//	请求设备状态数据上报
+	REQ_ACTION_FOR_CAPTURE					=	0x10c040;			//	请求联动抓图
+	RSP_ACTION_FOR_CAPTURE					=	0x10c041;
+	REQ_TOKEN_PAIR							=	0x10c050;			//	向MTU请求Token对，对应结构体为MediaBean.ReqTokenPair
+	RSP_TOKEN_PAIR							=	0x10c051;			//	Token对的响应，对应结构体为MediaBean.RspTokenPair
+	REQ_GETWRISTDATA						=	0x10c060;			//	BData向DMS获取手环数据请求
+	RSP_GETWRISTDATA						=	0x10c061;			//	DMS回复BData获取手环数据请求
+	REPORT_STAT_OF_MEETING_SHOW				=	0x10c063;			//	上报会议展示状态
+    REQ_CREATE_CHANNEL						=	0x10c070;			//	向MTU请求创建视频通道，对应结构体为MediaBean.ReqCreateChannel
+    RSP_CREATE_CHANNEL						=	0x10c071;			//	创建视频通道的响应，对应结构体为MediaBean.RspCreateChannel
+
+	/*	ETS	*/
+	REQ_ADD_ALARM_PLAN_FROM_WEB				=	0x10d000;			//	web请求添加报警预案
+	RSP_ADD_ALARM_PLAN_TO_WEB				=	0x10d001;			//	
+	REQ_UPDATE_ALARM_PLAN_FROM_WEB			=	0x10d010;			//	web请求修改报警预案
+	RSP_UPDATE_ALARM_PLAN_TO_WEB			=	0x10d011;			//	
+	REQ_DELETE_ALARM_PLAN_FROM_WEB			=	0x10d020;			//	web请求删除报警预案
+	RSP_DELETE_ALARM_PLAN_TO_WEB			=	0x10d021;			//	
+	REQ_ALARM_PLAN 							=	0x10d030;			//	客户端请求报警预案操作
+	RSP_ALARM_PLAN 							=	0x10d031;			//	
+	REQ_ALARM								=	0x10d060;			//	请求报警
+	RSP_ALARM								=	0x10d061;			//	
+	REPORT_ALARM							=	0x10d063;			//	报警上报
+	REQ_MEETING_NOTICE_TO_DMS				=	0x10d080;			//	下发会议通知到DMS
+	RSP_MEETING_NOTICE_FROM_DMS				=	0x10d081;			//	
+	REQ_RECEIVE_ATTENDANCE_RECORD			=	0x10d090;		    //	接收考勤数据
+	REQ_SHOW_SIGNIN_DATA_HISTORY			=	0x10d0a0;			//	请求历史签到数据展现
+	RSP_SHOW_SIGNIN_DATA_HISTORY			=	0x10d0a1;			//
+	REQ_ISSUED_PLAN_OF_RAISE_DUST			=	0x10d0b0;			//	请求下发扬尘设备预案，WEB下发
+	NOTICE_SIGN_IN_OF_REAL_TIME				=	0x10d0c2;			//	通知实时签到到bBox
+	REQ_WHILTE_LIST							=	0x10d0d0;			//	请求白名单
+	RSP_WHILTE_LIST							=	0x10d0d1;			//	
+	NOTICE_HOST_MAP							=	0x10d0d2;			//	下发通知热力图信息
+	REQ_WHITE_LIST_CAPITURE					=	0x10d0e0;			//	请求白名单证件照             
+	RSP_WHITE_LIST_CAPITURE					=	0x10d0e1;			//	
+	REQ_WHITE_LIST_DEV						=	0x10d0f0;			//	请求获取白名单设备
+	RSP_WHITE_LIST_DEV						=	0x10d0f1;			//
+	REQ_BPX_DATA_DISTRIBUTE					= 	0x10d100;			//	下发给BPX的消息
+	RSP_BPX_DATA_DISTRIBUTE					=	0x10d101;			//	
+	REQ_BPX_OPERATOR_DEVICE					=	0x10d110;			//	下发给BPX的控制信令
+	RSP_BPX_OPERATOR_DEVICE					=	0x10d111;			//	
+	REQ_BPX_DATA_REPORT						=	0x10d122;			//	BPX上报
+	REQ_GET_BOX_INFO						=	0x10d130;			//	请求box信息
+	RSP_GET_BOX_INFO						=	0x10d131;			//	响应box信息
+	REPORT_BPX_DATA_TO_CLIENT				=	0x10d143;			//  BPX上报数据给客户端
+	NOTICE_MEETING_TO_BDATA					=	0x10d0e2;			//	通知会议信息给BData
+	REQ_GET_CLUSTER_DATA					=	0x10d200;			//	请求获取集群服务信息
+	RSP_GET_CLUSTER_DATA					=	0x10d201;
+	REQ_ADD_ALARM_TIMETEMPLATE_DATA			=	0x10d210;			//	WEB请求添加报警时间模版
+	RSP_ADD_ALARM_TIMETEMPLATE_DATA			=	0x10d211;
+	REQ_UPDATE_ALARM_TIMETEMPLATE_DATA		=	0x10d220;			//	WEB请求更新报警时间模版
+	RSP_UPDATE_ALARM_TIMETEMPLATE_DATA		=	0x10d221;
+	REQ_DELETE_ALARM_TIMETEMPLATE_DATA		=	0x10d230;			//	WEB请求删除报警时间模版
+	RSP_DELETE_ALARM_TIMETEMPLATE_DATA		=	0x10d231;
+	REQ_ADD_VIDEO_PLAN_DATA					=	0x10d240;			//	WEB请求添加录像计划
+	RSP_ADD_VIDEO_PLAN_DATA					=	0x10d241;
+	REQ_UPDATE_VIDEO_PLAN_DATA				=	0x10d250;			//	WEB请求更新录像计划
+	RSP_UPDATE_VIDEO_PLAN_DATA				=	0x10d251;
+	REQ_DELETE_VIDEO_PLAN_DATA				=	0x10d260;			//	WEB请求删除录像计划
+	RSP_DELETE_VIDEO_PLAN_DATA				=	0x10d261;
+	REQ_UPDATE_ALARM_LINK_LEVEL_DATA		=	0x10d270;			//	WEB请求更新报警联动等级
+	RSP_UPDATE_ALARM_LINK_LEVEL_DATA		=	0x10d271;	
+	REQ_VIDEO_PLAN							=	0x10d280;			//	请求录像计划
+	RSP_VIDEO_PLAN							=	0x10d281;			//	
+	INFO_UPDATE_VIDEO_PLAN					=	0x10d294;			//	更新录像计划(集群内部通知)
+	INFO_DELETE_VIDEO_PLAN					=	0x10d2a4;			//	删除录像计划(集群内部通知)
+	NOTICE_VIDEO_PLAN_UPDATE				=	0x10d2b2;			//	通知DMS录像计划更新
+	NOTICE_VIDEO_PLAN_DELETE				=	0x10d2c2;			//	通知DMS录像计划删除	
+	INFO_UPDATE_WHITE_USER					=	0x10d2d4;			//	白名单更新(集群)
+	INFO_DELETE_WHITE_USER					=	0x10d2e4;			//	白名单删除(集群)
+	INFO_CLEAR_WHITE_USER					=	0x10d2f4;			//	白名单清空(集群)
+	REQ_LINKAGE_TOKEN						=	0x10d300;			//	BMS传递给ETS用于与BOX建立连接的token
+	RSP_LINKAGE_TOKEN						=	0x10d301;
+	/*	环境相关	*/
+	REQ_HEART_BEAT							=	0x10e000;			//	请求心跳
+	RSP_HEART_BEAT							=	0x10e001;			//	
+
+    /*	Catalog (CLS)	*/
+	REQ_DEVICE_LIST         				=	0x10f000;			//	请求设备列表 CatalogBean.ReqDeviceList
+	RSP_DEVICE_LIST         				=	0x10f001;			//              CatalogBean.RspDeviceList
+	REQ_CHANNEL_INFO         				=	0x10f010;			//	请求通道信息 CatalogBean.ReqChannelInfo
+	RSP_CHANNEL_INFO         				=	0x10f011;			//              CatalogBean.RspChannelInfo
+	REQ_PLAY_STREAM         				=	0x10f020;			//	请求视频流   CatalogBean.ReqPlayStream
+	RSP_PLAY_STREAM         				=	0x10f021;			//              CatalogBean.RspPlayStream
+	REQ_QUERY_RECORD           				=	0x10f030;			//	请求录像资源 CatalogBean.ReqRecordRes
+	RSP_QUERY_RECORD           				=	0x10f031;			//              CatalogBean.RspQureyRecordRes
+	REQ_RECEIVE_RECORD         				=	0x10f040;			//	请求回放或者下载录像  CatalogBean.ReqRecordRes
+	RSP_RECEIVE_RECORD         				=	0x10f041;			//                      CatalogBean.RspReveiveRecordRes
+}

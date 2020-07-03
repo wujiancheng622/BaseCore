@@ -1,0 +1,6 @@
+package com.arges.file.proto;
+
+message WristBandMacAddressList 
+{
+	repeated string wristBandMacAddress = 1;
+}

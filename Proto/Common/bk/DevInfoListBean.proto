@@ -1,0 +1,87 @@
+package com.arges.file.proto;
+
+message ChnInfo
+{
+	optional int32		nIndex= 1	[default = -1];		//通道序号
+	optional int32      subType= 2	[default = -1];		//通道具体上报的消息类型，比如火警，烟感报警
+	optional int32		nLevel= 3	[default = -1];		//级别
+	optional int32		InOrOut= 4	[default = -1];		//0是输入通道，1是输出通道
+}
+
+/*	设备信息*/
+message DeviceInfo
+{
+	optional string	 keyId	= 1	[default = "default"];					//主键id
+	optional string  devId 	= 2	[default = "default"];  		//DVR编号																				-> adm_dev->DEVICE_CODE
+	optional string  provider 	= 3	[default = "default"];  		//厂家																				-> adm_dev->DEVICE_MANUFACTURER
+	optional string  model 	= 4	[default = "default"];  		//型号																				-> adm_dev->DEVICE_MODEL
+	optional string  devIp 	= 5	[default = "default"];  		//设备IP，支持域名																->adm_dev->DEVICE_IP
+	optional int32   devPort	= 6	[default = -1];              	//设备端口																			-> adm_dev->DEVICE_PORT
+	optional string  userName 	= 7	[default = "default"];  		//设备的登录用户名																-> adm_dev->LOGIN_NAME
+	optional string  userPsw 	= 8	[default = "default"];  		//设备的登录密码																-> adm_dev->LOGIN_PASSWORD
+	optional int32   streamType= 9	[default = -1];             	//码流类型																			->adm_dev_encoder_unit->STREAM_TYPE
+	optional int32   devType	= 10	[default = -1];               	//设备类型，见ADDDVRDEVTYPE枚举类											-> adm_dev->DEVICE_TYPE
+	optional int32   proxyPort	= 11[default = -1];          		//代理映射的端口，添加到代理服务、主动注册服务等时有效		->adm_dev->REGIST_PROXY_PORT
+	optional string  registerId = 12	[default = "default"];  	//主动注册的ID，向主动注册服务添加设备时有效						->adm_dev->REGIST_SERVICE_ID
+	optional string  deviceThird = 13	[default = "default"];  	//第三方设备		
+	optional int32   streamMode= 14	[default = -1];        		//流模式，1：直连，2：拉流，3：推流									->adm_dev_decoder_unit->DECODE_MODE
+	optional int32   channelNum= 15	[default = -1];        		//通道总数																			->adm_dev_encoder_unit->CHANNEL_NUM
+	optional int32   loginType	= 16		[default = -1];        	//ARS (UNIT_ARS)or PCPS(UNIT_PCPS)														-> adm_dev->LOGIN_TYPE
+	optional int32   combineStatus= 17	[default = -1];        		//是否支持融合，1：支持，0：不支持										->adm_dev_decoder_unit->CONBINE_STATUS
+	repeated ChnInfo chninfo=18;
+	optional int32 	serviceCode = 19[default=-1];									//	->adm_dev->PROXY_SERVICE_CODE		服务编码	
+	optional string serviceIp = 20[default="default"];									//	服务IP 		->adm_service->SERVICE_IP
+	optional int32	servicePort = 21[default=-1];								//	->adm_service->SERVICE_PORT
+
+}
+
+
+message DeviceInfoList
+{
+	repeated DeviceInfo deviceinfo			=	1;
+}
+
+/*	TMS	根据设备编号向DCenter获取设备信息*/
+message ReqDevInfoFromTms
+{
+	required string	tmsId					=	1	[default="default"];		//TMS URL
+	required int32 	oprType					=	2	[default=-1];		//TMS 操作类型:	1:增；2:删；3:改；4:查
+	repeated string 	devId					=	3;
+}
+
+/*	DCenter	向TMS	响应设备信息	*/
+message RspDevInfoToTms
+{
+	optional string tmsId					=	1	[default="default"];		//TMS URL
+	optional int32 	oprType				=	2	[default=-1];		//TMS 操作类型:	1:增；2:删；3:改；4:查
+	repeated DeviceInfo deviceinfo			=	3	;
+}
+
+/*	DMS	根据设备编号向DCenter获取设备信息*/
+message ReqDevInfoFromDms
+{
+	required string	dmsId					=	1	[default="default"];		//TMS URL
+	required int32 	oprType					=	2	[default=-1];		//TMS 操作类型:	1:增；2:删；3:改；4:查
+	repeated string 	devId					=	3;
+}
+
+/*	DCenter	向DMS	响应设备信息*/
+message RspDevInfoToDms
+{
+	optional string 	dmsId				=	1	[default="default"];		//TMS URL
+	optional int32 	oprType				=	2	[default=-1];		//TMS 操作类型:	1:增；2:删；3:改；4:查
+	repeated DeviceInfo deviceinfo			=	3	;
+}
+/* DIS向DC请求设备的注册服务信息*/
+message ReqDevRegisterServerInfo
+{
+	repeated string devId				=	1;	//	dev id
+	required int32 mstype				=	2;	//1是tms，2是dms
+}
+/*	DC向DIS响应注册服务信息。*/ 
+message RspDevRegisterServerInfo
+{
+	repeated string devId				=	1;	//	dev id
+	required int32 mstype				=	2;	//dms1,tms3
+	repeated DeviceInfo deviceinfo			=	3;
+}

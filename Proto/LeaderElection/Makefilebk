@@ -1,0 +1,64 @@
+
+ARCH = X86_64;
+ifeq ($(shell getconf LONG_BIT), 32)
+    ARCH = I386
+else
+    ARCH = X86_64
+endif
+
+
+DEPEND_PATH					=../../../Depend
+
+
+PROTOBUF_PATH=../../protobuf/$(ARCH)/
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(PROTOBUF_PATH)/lib
+
+MQOBJS	= $(patsubst %.pb.cc,  %.pb.o, $(wildcard ./LeaderElection/*.pb.cc))
+
+
+
+	
+
+ALL:ALLCC ALLOBJ PROTOSO
+
+
+
+LDFLAGS += \
+	-L$(DEPEND_PATH)/BaseCore/Threads \
+	-L$(DEPEND_PATH)/Boost/$(ARCH)/lib \
+	-L$(DEPEND_PATH)/BaseCore/Timer \
+	-L$(DEPEND_PATH)/BaseCore/MQClient \
+	-lTimerCoreBase \
+	-lThreadCoreBase \
+	-lMqClient \
+	-lboost_chrono \
+	-lboost_date_time \
+	-lboost_thread \
+	-lboost_system \
+    -ldl \
+	-lrt \
+	-luuid  \
+	
+
+	
+SRCS += \
+		$(wildcard ./*.cpp) \
+
+ALLCC:
+	$(PROTOBUF_PATH)/bin/protoc      -I ./LeaderElection --cpp_out=./LeaderElection ./LeaderElection/*.proto
+	
+	
+ALLOBJ:$(MQOBJS)
+
+
+PROTOSO:
+	g++ -fPIC  $(LDFLAGS) ./LeaderElection/*.pb.o -shared -o  ./Lib/libtestproto.so	
+	
+	
+%.pb.o:%.pb.cc
+	g++ -fPIC  -I$(PROTOBUF_PATH)/include  -L$(PROTOBUF_PATH)/lib   -c $< -o $@	
+
+clean:
+	rm ./LeaderElection/*.o 
+	rm ./Lib/libtestproto.so 

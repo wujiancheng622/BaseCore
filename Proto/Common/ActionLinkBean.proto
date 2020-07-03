@@ -1,0 +1,110 @@
+package com.arges.file.proto; 
+
+/*	联动抓图请求类型	*/
+enum REQUEST_TYPE_OF_PICTURE_LINK
+{
+	PICTURE_LINK_GET_DEV_INFO				=	1;								//	获取抓图IPC设备信息
+	PICTURE_LINK_GET_PICTURE				=	2;								//	抓图请求
+}
+
+/*	音频循环播放标志	*/
+enum LOOP_TYPE_OF_SOUND_LINK
+{
+	SOUND_LINK_NOT_LOOP_PLAY				=	0;								//	不循环播放
+	SOUND_LINK_LOOP_PLAY					=	1;								//	循环播放
+}
+
+/*	联动音频数据结构	*/
+message SoundLinkData
+{
+	optional int64		alarmType			=	1	[default = -1];				//	报警类型	->adm_alarm_type->ID
+	optional string		name				=	2	[default = ""];				//	联动名称
+	optional string		file				=	3	[default = ""];				//	联动音频文件名
+	optional int32		isLoop				=	4	[default = 0];				//	循环播放，参考LOOP_TYPE_OF_SOUND_LINK
+}
+
+/*	灯光自动启动标识	*/
+enum AUTO_TYPE_OF_LIGHT_LINK
+{
+	LIGHT_LINK_IS_NOT_AUTO_OPEN				=	0;								//	不自动开启
+	LIGHT_LINK_IS_AUTO_OPEN					=	1;								//	自动开启
+}
+
+/*	联动灯光数据结构	*/
+message LightLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		channelCode			=	3	[default = ""];				//	通道编号，如：1000014$3$0$0
+}
+
+/*	联动视频数据结构	*/
+message VideoLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		channelCode			=	3 	[default = ""];				//	通道编号，如：1000014$3$0$0
+	optional int64		stayTime			=	4 	[default = 0];				//	持续时间
+	optional string		prepoint			=	5 	[default = ""];				//	前置点（web端暂时没有配置，作为以后扩展用）
+}
+
+/*	联动email	*/
+message EmailLinkData
+{
+	optional int64		id					=	1	[default = -1];				//	ID
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		subject				=	3	[default = ""];				//	主题
+	optional string		content				=	4	[default = ""];				//	内容
+	repeated string		emailAddress        =	5	;				//	用户邮箱地址
+}
+
+/*	联动录像	*/
+message RecordLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID
+	optional int64		ruleId				=	2	[default = -1];				//	规则ID
+	optional int64		recordTime			=	3 	[default = 0];				//	录像时间
+	optional int64		preRecordTime		=	4	[default = 0];				//	预先录音时间
+	optional int32		assistantStream		=	5	[default = -1];				//	辅码流
+	repeated string		channelCode			=	6 	;							//	通道编号，如：1000014$3$0$0
+}
+
+/*	联动短信	*/
+message SmsLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID
+	optional int64		ruleId				=	2 	[default = -1];				//	规则ID
+	optional string		content				=	3 	[default = ""];				//	短信内容
+	repeated string		phoneNumber			=	4 	;				//	用户电话号码
+}
+
+message TvwallMissonData
+{  
+	optional int64		sourcelCode			=	1 	;							//	需上墙设备号，如：1000014
+	optional int64		sourcelSeq			=	2 	;							//	需上墙设备通道号
+	optional int64      screenSeq           =   3   ;                           //  大屏编号（解码器通道号，从0开始）
+	optional int64      windowIndex         =   4   ;                           //  小屏编号（从0开始）
+	optional int64      windowCount         =   5   ;                           //  小屏总数（开窗数量）
+	
+}
+
+/*	联动上墙	*/
+message TvwallLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID 
+	optional int64 		ruleId				=	2 	[default = -1];				//	规则ID
+	optional int64		planId				=	3	[default = -1];				//	电视墙预案ID
+	optional int64		keepTime			=	4	[default = 30];				//	持续时间，默认30s
+	repeated TvwallMissonData misson        =   5   ;                           //  单个上墙任务
+}
+
+/*	联动抓图	*/
+message CapitureLinkData
+{
+	optional int64		id					=	1 	[default = -1];				//	ID
+	optional int64		ruleId				=	2	[default = -1];				//	规则ID
+	optional int32		status				=	3	[default = 0];				//	0：不启用；1：启用
+	optional bytes		picture1			=	4	[default = ""];				//	抓图图片1
+	optional bytes		picture2			=	5	[default = ""];				//	抓图图片2
+	optional bytes		picture3			=	6	[default = ""];				//	抓图图片3
+}

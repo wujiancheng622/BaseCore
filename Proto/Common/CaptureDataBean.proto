@@ -1,0 +1,19 @@
+package com.arges.file.proto; 
+
+message CaptureData 
+{
+	optional string  scannerdevicecode		=	1	[default = "default"];		//扫描器ID
+	optional string  wristmac				=	2	[default = "default"];		//手环mac
+    optional string  time					=	3	[default = "default"];		//时间戳	
+	optional string  actiontype				=	4	[default = "default"];		//联动动作类型
+	optional string  actiondescribe			=	5	[default = "default"];		//图片比对结果相似度
+	optional bytes   actiondata1			=	6	[default = "default"];		//临时图片
+	optional bytes   actiondata2			=	7	[default = "default"];		//临时图片
+	optional bytes   actiondata3			=	8	[default = "default"];		//临时图片
+    optional bytes   actiondata				=	9	[default = "default"];	 	//匹配结果图
+	optional bytes   picture			    =	10	[default = "default"];	 	//证件照
+	optional string  recordpicture			= 	11	[default = "default"];		//首帧图名称
+	optional string  recordvideo			= 	12	[default = "default"];		//视频名称
+	optional string	 picturePath			=	13	[default = "default"];		//图片路径
+}
+

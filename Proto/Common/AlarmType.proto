@@ -1,0 +1,6 @@
+package com.arges.file.proto;  
+
+enum ALARM_TYPE 
+{
+	ALARM_FOR_GET_CAPTURE		=	897;		//	报警联动抓图
+}

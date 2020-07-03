@@ -1,0 +1,36 @@
+package com.arges.file.proto;
+
+/*	报警主机操作类型	*/
+enum ALARMHOST_OPT_TYPE
+{
+	AHOST_OPERATE_DEVICE			= 1;		//设备 布/撤防
+	AHOST_OPERATE_CHANNEL			= 2;		//通道 布/撤防
+	AHOST_OPERATE_PARTITION			= 3;		//分区 布/撤防	
+}
+
+/*	报警主机操作命令	*/
+enum AHOST_CMD_TYPE
+{
+	AHOST_CMD_ENABLE		=1;			//布防
+	AHOST_CMD_DISABLE		=2;			//撤防
+	AHOST_CMD_BYPASS		=3;			//旁路
+	AHOST_CMD_CANCELKBLIGHT	=4;    		//取消键盘指示灯显示
+	AHOST_CMD_ALARMMODE		=5;       	//设置报警主机取消报警是自动的还是客户端手动取消
+	AHOST_CMD_CANCELALARM	=6;      	//取消报警上报
+	AHOST_CMD_ALARMOUT_ON	=7;			//报警主机输出通道打开
+	AHOST_CMD_ALARMOUT_OFF	=8;			//报警主机输出通道关闭
+}
+
+/*	报警主机操作消息结构	*/
+message SetAHostMassage
+{
+	optional string 		devid				=	1	[default = ""];				//设备id   比如1000012
+	repeated string			nodeid				=	2	;							//设备通道号或者分区号数组   比如通道1  填1即可
+	optional int32			type				=	3	[default = -1];				//操作类型，参考ALARMHOST_OPT_TYPE
+	optional int32			cmd					=	4	[default = -1];				//操作命令，参考AHOST_CMD_TYPE
+	optional int64			startTime			=	5	[default = -1];				//开始时间
+	optional int64			endTime 			=	6	[default = -1];				//结束时间
+}
+
+
+

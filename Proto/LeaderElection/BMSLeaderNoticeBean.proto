@@ -1,0 +1,19 @@
+package com.arges.file.proto;   
+
+
+//Leader信息通知
+message ReqLeaderInfoNotice
+{
+	//	服务信息
+	optional	string		id		=1  [default = "default"];	//	leader的ID
+	optional	string		ip		=2  [default = "default"];	//	leader的IP
+	optional	int32		port	=3  [default = -1];	//leader的监听端口
+}
+
+
+//Leader信息通知响应
+message RspLeaderInfoNotice
+{
+	optional	int32		result 		= 1	[default = -1];  			//	消息结果	1：成功；2：失败;
+    optional	string		id 	= 2		[default = "default"];			//	leader的ID
+}

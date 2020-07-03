@@ -1,0 +1,25 @@
+package com.arges.file.proto;  
+
+/*	TMS	上报手环数据的数据结构*/
+message HbeaconData 
+{
+    required string   deviceCode	=	1 [default=""];             //	设备ID
+	repeated Wrist wrists 			= 	2;							// 	当前手环数据
+} 
+
+/*	单个手环数据格式*/
+message Wrist 
+{
+	required string scannerMac = 	1 [default=""];  				//  扫描器MAC地址
+	required string deviceMac 	= 	2 [default=""];  				//	手环MAC地址
+	required uint64 time 		=	3 [default=0];               	//	时间戳
+	required int32 	rssi 		= 	4 [default=0]; 					//	RSSI(实时)
+	required string userStatus 	= 	5 [default=""]; 				//	用户状态（实时）
+	required string steps 		= 	6 [default=""]; 				//	步数（实时）
+}
+
+/*	手环数据链表*/
+message WristList
+{
+	repeated Wrist wrist		=	1;			//	
+}

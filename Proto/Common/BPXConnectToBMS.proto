@@ -1,0 +1,9 @@
+package com.arges.bmsbpx.proto;
+  
+message BPXConnectToBMS 
+{
+	required string  uuid = 40;  				//bpx的UUID
+	required int64   hHandle = 41; 				//BMS给BPX分配的socket句柄
+	optional string  ip   = 42  				[default = ""] ; //IP
+} 
+

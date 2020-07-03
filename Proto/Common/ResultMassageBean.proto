@@ -1,0 +1,12 @@
+package com.arges.file.proto;    
+
+message ResultMassage {
+    optional	int32		result 		= 1	[default = 0];  	//	消息结果	1：成功；2：失败;
+    optional	string		describe 	= 2	[default = ""];		//	异常描述
+} 
+
+enum RESULT_TYPE 
+{
+	RESULT_ERR	=	-1;
+	RESULT_OK	=	0;
+}

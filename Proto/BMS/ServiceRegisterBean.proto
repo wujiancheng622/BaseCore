@@ -1,0 +1,93 @@
+package com.arges.file.proto;   
+
+
+//		主动注册模块服务信息		
+message RegisterModelInfo
+{
+	optional string ip=1	[default = "default"];	//主动注册服务的ip
+	optional int32  port=2	 [default = -1];	//主动注册服务的端口
+}
+
+
+//	服务信息
+message ServiceInfoForRegister
+{
+	//	服务信息
+	optional	string		info_node					=	1 [default = "default"];	//	所属节点
+	optional	string		info_address					=	2 [default = "default"];	//	节点地址
+	optional	string		info_service_id				=	3 [default = "default"];	//	服务唯一标识
+	optional	string		info_service_name				=	4 [default = "default"];	//	服务名称
+	optional	string		info_service_address			=	5 [default = "default"];	//	服务地址
+	optional	int32		info_service_port				=	6 [default = -1];	//	服务端口
+	optional	int32		info_service_pid				=	7 [default = -1];	//	进程Pid
+	optional	int32		info_service_module			=	8 [default = -1];	//	服务所属模块
+	optional	string		info_mq_consumer_queue_name	=	9 [default = "default"];	//	MQ_Consumer队列名
+	//	健康状态
+	optional	string		status_node					=	10 [default = "default"];	//	所属节点
+	optional	string		status_check_id				=	11 [default = "default"];	//	健康检测唯一标识
+	optional	string		status_name					=	12 [default = "default"];	//	健康检测名称
+	optional	string		status_status					=	13 [default = "default"];	//	健康状态
+	optional	string		status_notes					=	14 [default = "default"];	//	
+	optional	string		status_output					=	15 [default = "default"];	//	
+	optional	string		status_service_id				=	16 [default = "default"];	//	相关联服务ID
+	optional	string		status_service_name			=	17 [default = "default"];	//	相关联服务名称
+	
+	repeated RegisterModelInfo registermodel			=18;	//所有主动注册模块的信息
+}
+
+//	请求服务注册
+message ReqServiceRegister
+{
+	required	ServiceInfoForRegister	serviceInfo		=	1;
+}
+
+//	注册请求响应
+message RspServiceRegister
+{
+	optional	int32		result 		= 1	[default = -1];  			//	消息结果	1：成功；2：失败;
+    optional	string		describe 	= 2	[default = "default"];		//	异常描述
+    optional	string		id			= 3 [default = ""];				//	服务id	
+}
+
+//	请求服务注销
+message ReqServiceLogout
+{
+	repeated	string		id			=	1 ;		//	服务id	链表
+}
+
+//	服务注销响应
+message RspServiceLogout
+{
+	optional	int32		result 		= 1	[default = -1];  			//	消息结果	1：成功；2：失败;
+    optional	string		describe 		= 2	[default = "default"];		//	异常描述
+}
+
+//	请求服务查询
+message ReqServiceInfoForQuery
+{
+	//	服务信息
+	repeated	string		info_node						=	1;	//	所属节点
+	repeated	string		info_address					=	2;	//	节点地址
+	repeated	string		info_service_id					=	3;	//	服务唯一标识
+	repeated	string		info_service_name				=	4;	//	服务名称
+	repeated	string		info_service_address			=	5;	//	服务地址
+	repeated	int32		info_service_port				=	6;	//	服务端口
+	repeated	int32		info_service_pid				=	7;	//	进程Pid
+	repeated	int32		info_service_module				=	8;	//	服务所属模块
+	repeated	string		info_mq_consumer_queue_name		=	9;	//	MQ_Consumer队列名
+	//	健康状态
+	repeated	string		status_node					=	10;	//	所属节点
+	repeated	string		status_check_id				=	11;	//	
+	repeated	string		status_name					=	12;	//	
+	repeated	string		status_status				=	13;	//
+	repeated	string		status_notes				=	14;	//	
+	repeated	string		status_output				=	15;	//	
+	repeated	string		status_service_id			=	16;	//	
+	repeated	string		status_service_name			=	17;	//	
+}
+
+//	响应服务信息请求
+message RspServiceInfoForQuery
+{
+	repeated	ServiceInfoForRegister	service_info	= 	1;	//	
+}

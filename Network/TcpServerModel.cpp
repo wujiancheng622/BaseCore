@@ -789,7 +789,6 @@ namespace BaseCore
 
 		TcpServer_Helper::TcpServer_Helper(TcpServer *pOutHandler)
 		{
-			m_server=NULL;
 			m_pOutHander=pOutHandler;
 			m_server = new Server(m_pOutHander);
 		}

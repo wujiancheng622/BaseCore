@@ -1,0 +1,58 @@
+package com.arges.file.proto;
+import "DevInfoListBean.proto";
+
+/*	分配选项	*/
+enum OPRATION_TYPE_OF_DEVICE_DESTRIBUTION
+{
+	DEVICE_DESTRIBUTION_FOR_INITIACTIVE_REGISTER	=	1;						//	主动注册设备分配
+	DEVICE_REDESTRIBUTE_FOR_SERVICE_EXCEPTION		=	2;						//	服务异常，设备的再分配
+	DEVICE_DESTRIBUTION_FOR_PLATFROM_INITIACTIVE	=	3;						//	平台自主分配
+	DEVICE_DESTRIBUTION_FOR_MODIFY					=	4;						//	设备信息被修改
+	DEVICE_DESTRIBUTION_FOR_DELETE					=	5;						//	删除设备
+}
+
+/*	DMS向DIS请求设备信息	*/
+message ReqDeviceInfoListForDistribution
+{
+	optional string			serverId		=	1	[default = ""];			//	请求源服务ID
+	optional int32			type			=	2	[default = -1];			//	操作类型，参考OPRATION_TYPE_OF_DEVICE_DESTRIBUTION	
+	optional int32			order			=	3	[default = -1];			//	分配规则优先级
+	optional int32			msType			=	4	[default = -1];			//	设备管理服务的类型，参考MODULE_TYPE
+}
+
+/*	设备分配操作结果	*/
+enum DISTRIBUTE_RESULT_TYPE_OF_DEV
+{
+	DISTRIBUTE_DEVICE_RESULT_IS_OK			=	1;							//	设备分配成功
+	DISTRIBUTE_DEVICE_RESULT_IS_ERROR		=	2;							//	设备分配失败
+	DISTRIBUTE_DEVICE_RESULT_IS_NULL		=	3;							//	设备分配响应正常，但没有需要分配的设备，结果集为NULL
+}
+
+/*	DIS响应设备信息	*/
+message RspDeviceInfoListForDistribution
+{
+	repeated DeviceInfo		devs			=	1;							//	设备信息
+	optional int32			doType			=	2	[default = -1];			//	设备操作类型，参考OPRATION_TYPE_OF_DEVICE_DESTRIBUTION
+	optional int32			result			=	3	[default = -1];			//	操作结果，参考DISTRIBUTE_RESULT_TYPE_OF_DEV
+	optional bytes			resultDescribe	=	4	[default = ""];			//	结果描述
+}
+
+/*	设备归属查询请求	*/
+message ReqAffiliactionOfDevice
+{
+	optional string			devId			=	1	[default = ""];			//	设备ID
+}
+
+/*	设备归属查询请求响应	*/
+message RspAffiliactionOfDevice
+{
+	optional string			devCode			=	1	[default = ""];			//	设备编码
+	optional int32			mountType		=	2	[default = -1];			//	设备挂载方式，参考MediaBean.proto->ACCESS_TYPE_OF_DEVICE
+	optional string			serviceId		=	3	[default = ""];			//	归属DMS服务注册ID
+	optional string			upDevCode		=	4	[default = ""];			//	上级设备编码
+	optional string			devId			=	5	[default = ""];			//	设备ID
+	optional string			proxyServiceIp	=	6	[default = ""];			//	代理服务IP
+	optional int32			proxyServicePort=	7	[default = -1];			//	代理服务端口
+	optional string			proxyServiceCode=	8	[default = ""];			//	代理服务CODE
+}
+

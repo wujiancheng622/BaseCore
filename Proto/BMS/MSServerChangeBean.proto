@@ -1,0 +1,7 @@
+package com.arges.file.proto;
+
+message MSServerChange
+{
+	required int32 operation		=	1	[default = 0] ;		//操作（1.MS异常(减少) 2.MS增加,3MS初始化更新所有TMS）
+	repeated string listMsId		=	2;						//MS ID
+}

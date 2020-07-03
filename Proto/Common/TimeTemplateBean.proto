@@ -1,0 +1,12 @@
+package com.arges.file.proto;
+
+/*	时间模板	*/
+message TimeTemplateData
+{
+	optional int64		startTime                =	1	[default = 0];		//开始时间
+	optional int64		endTime					 =	2	[default = 0];		//结束时间
+	optional bool		isRepeat                 =  3	[default = false];	//是否重复
+	optional string		repeatWeek				 =	4	[default = ""];		//仅当isRepeat为true时有效,0-6分别代表周日到周六，如（0，1）代表周日和周一
+	optional bool		isRepeatForever          =  5	[default = false];	//是否永久循环
+	optional int64		repeatEndTime            =  6	[default = 0];      //循环结束时间，isRepeat为true并且weekTime符合情况下才使用
+}

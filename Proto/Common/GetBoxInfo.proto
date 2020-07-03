@@ -1,0 +1,13 @@
+package com.arges.file.proto;
+
+message ReqGetBoxInfo
+{
+	optional string		describe			=	1	[default = ""];		//请求信息
+	optional int32 		requesTtype			=	2	[default = -1];		//请求类型
+}
+
+message RspGetBoxInfo
+{
+	optional string 	boxid				=	1	[default = ""];		//	box唯一标识码
+	optional string		resultDescirbe		=	2	[default = ""];		//	结果描述
+}

@@ -1,0 +1,129 @@
+package com.arges.file.proto;   
+
+//		主动注册模块服务信息		
+message RegisterModelInfo
+{
+	optional string ip=1	[default = ""];	//主动注册服务的ip
+	optional int32  port=2	 [default = -1];	//主动注册服务的端口
+	optional int32		type 	=	3	[default = -1];		//	服务类型
+	optional string		name	=	4	[default = ""];		//	服务名称
+}
+
+//	服务信息
+message ServiceInfoForRegister
+{
+	//	服务信息
+	optional	string		info_node					=	1 [default = ""];	//	所属节点，服务器名称->adm_service_register->SERVER_NAME
+	optional	string		info_address					=	2 [default = ""];	//	节点地址，服务器IP->adm_service_register->SERVER_IP
+	optional	string		info_service_id				=	3 [default = ""];	//	服务唯一标识->adm_service->SERVICE_CODE
+	optional	string		info_service_name				=	4 [default = ""];	//	服务名称->adm_service->SERVICE_NAME
+	optional	string		info_service_address			=	5 [default = ""];	//	服务地址->adm_service->SERVICE_IP
+	optional	int32		info_service_port				=	6 [default = -1];	//	服务端口->adm_service->SERVICE_PORT
+	optional	int32		info_service_pid				=	7 [default = -1];	//	进程Pid
+	optional	int32		info_service_module			=	8 [default = -1];	//	服务所属模块->adm_service->SERVICE_TYPE
+	optional	string		info_mq_consumer_queue_name	=	9 [default = ""];	//	MQ_Consumer队列名
+	//	健康状态
+	optional	string		status_node					=	10 [default = ""];	//	所属节点
+	optional	string		status_check_id				=	11 [default = ""];	//	健康检测唯一标识
+	optional	string		status_name					=	12 [default = ""];	//	健康检测名称
+	optional	string		status_status					=	13 [default = ""];	//	健康状态
+	optional	string		status_notes					=	14 [default = ""];	//	
+	optional	string		status_output					=	15 [default = ""];	//	
+	optional	string		status_service_id				=	16 [default = ""];	//	相关联服务ID
+	optional	string		status_service_name			=	17 [default = ""];	//	相关联服务名称
+	
+	repeated RegisterModelInfo registermodel			=18;	//所有主动注册模块的信息
+	//	以下是原服务信息
+	optional	int64		id							=	19	[default = -1];		//	服务id->adm_service->id
+	optional	string		outer_net_ip				=	20	[default = ""];		//	外网IP->adm_service->SERVICE_IP_EXT
+	optional	int32		outer_net_port				=	21	[default = -1];		//	外网端口->adm_service->SERVICE_PORT_EXT
+	optional	string		path						=	22	[default = ""];		//	服务位置->adm_service->SERVICE_PATH
+	optional	string		server_code					=	23	[default = ""];		//	服务器编码->adm_service->SERVICE_CODE
+	optional	string		memo						=	24	[default = ""];		//	描述->adm_service->MEMO
+	optional	int64		sort						=	25	[default = -1];		//	排序->adm_service->SORT
+	optional	int32		is_onlie					=	26	[default = -1];		//	在线状态->adm_service->IS_ONLIE
+	optional	string		domain						=	27	[default = ""];		//	所属项目域->adm_service->OWNER_CODE
+}
+
+//	请求服务注册
+message ReqServiceRegister
+{
+	required	ServiceInfoForRegister	serviceInfo		=	1;
+}
+
+//	注册请求响应
+message RspServiceRegister
+{
+	optional	int32		result 		= 1	[default = -1];  			//	消息结果	1：成功；2：失败;
+    optional	string		describe 	= 2	[default = ""];		//	异常描述
+    optional	string		id			= 3 [default = ""];				//	服务id
+	optional	int32		service_num	= 4 [default = -1];				//	服务模块中该模块服务总数
+}
+
+//	请求服务注销
+message ReqServiceLogout
+{
+	repeated	string		id			=	1 ;		//	服务id	链表
+}
+
+//	服务注销响应
+message RspServiceLogout
+{
+	optional	int32		result 		= 1	[default = -1];  		//	消息结果	1：成功；2：失败;
+    optional	string		describe 	= 2	[default = ""];	//	异常描述
+}
+
+/*	服务信息请求的类型	*/
+enum OPRATION_TYPE_OF_SERVICE_INFO
+{
+	SERVICE_INFO_GET_ALL				=	1;						//	获取所有服务信息
+	SERVICE_INFO_GET_BY_MODULE			=	2;						//	根据模块获取
+	SERVICE_INFO_GET_ALL_BY_DOMAIN		=	3;						//	获取项目所属的所有服务信息
+	SERVICE_INFO_GET_BY_DOMAIN_AND_MODULE	=	4;					//	获取项目所属的特定模块的服务信息
+	SERVICE_DELETE_BY_ID				=	5;						//	根据服务注册ID删除服务
+	SERVICE_ADD							=	6;						//	新增服务
+	SERVICE_UPDATE_BY_ID				=	7;						//	根据注册ID更新服务信息
+}
+
+//	请求服务查询
+message ReqServiceInfoForQuery
+{
+	//	服务信息
+	repeated	int32		info_service_module				=	1;	//	服务所属模块
+	optional	int32		type						=	2;		//	请求类型，参考OPRATION_TYPE_OF_SERVICE_INFO
+	optional	string		projectDomain				=	3;		//	项目域---项目组织的根节点编码
+}
+
+//	响应服务信息请求
+message RspServiceInfoForQuery
+{
+	repeated	ServiceInfoForRegister	service_info	= 	1;	//	
+}
+
+//	服务变更请求
+message ReqServiceModify
+{
+	repeated ServiceModify		dos			=	1;				//	服务变更操作
+	
+	//	服务变更
+	message ServiceModify
+	{
+		optional int32		type			=	1	[default = -1];		//	操作类型，参考：OPRATION_TYPE_OF_SERVICE_INFO
+		repeated ServiceInfoForRegister	infos	=	2;					//	服务信息
+	}
+}
+
+//  请求服务保存
+message ReqMysqlServiceModify
+{
+	required int32 	oprType							=	1 [default=-1];		//TMS 操作类型:	1:增,2:删
+	repeated ServiceInfoForRegister	service_info	= 	2;
+}
+
+//	服务保存响应
+message RspMysqlServiceModify
+{
+	optional	int32		result 		= 1	[default = -1];  			//	消息结果	1：成功；2：失败;
+	optional	string		describe 	= 2	[default = ""];		//	异常描述
+	repeated	string		id			= 3;							//	服务id
+}

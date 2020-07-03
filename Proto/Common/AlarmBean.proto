@@ -1,0 +1,338 @@
+package com.arges.file.proto;
+import  "DevInfoListBean.proto";
+import "ActionLinkBean.proto";
+import "TimeTemplateBean.proto";
+import public "RaiseDustDataBean.proto";
+
+
+/*	报警联动动作数据结构	*/
+message ActionLinkData
+{
+	repeated SoundLinkData	sounds				=	1;							//	联动音频
+	repeated LightLinkData	lights				=	2;							//	联动灯光
+	repeated VideoLinkData	videos				=	3;							//	联动视频
+	repeated RecordLinkData records				=	4;							//	联动录像
+	repeated SmsLinkData	sms					=	5;							//	联动短信
+	repeated TvwallLinkData	tvwalls				=	6;							//	联动电视墙
+	repeated EmailLinkData	emails				=	7;							//	联动邮件
+	repeated CapitureLinkData cpts				=	8;							//	联动抓图
+}
+
+/*	报警源设备类型	*/
+enum DEVICE_TYPE_OF_ALARM_SROUCE
+{
+	ALARM_DEVICE_SOURCE_IS_DEVICE				=	1;							//	设备
+	ALARM_DEVICE_SOURCE_IS_VIDEO				=	2;							//	视频通道
+	ALARM_DEVICE_SOURCE_IS_ALARMIN				=	3;							//	报警输入通道
+	ALARM_DEVICE_SOURCE_IS_INTELLIGENT			=	4;							//	智能通道
+}
+
+/*	报警源信息	*/
+message AlarmSrcDevInfo
+{
+	optional int64			ruleId				=	1	[default = -1];			//	规则ID			->adm_alarm_rule_describe->ID
+	optional string			code				=	2	[default = ""];			//	源设备CODE，如1000014$3$0$0
+	optional int32			nodeType			=	3	[default = -1];			//	原设备类型，参考 DEVICE_TYPE_OF_ALARM_SROUCE
+	optional string			cascadeDevDomain	=   4	[default = ""];			//	级联上级设备的设备域编码
+}
+
+/*	报警结果类型	*/
+enum RESULT_TYPE_OF_ALARM
+{
+	ALARM_IS_OK									=	1;							//	报警正常执行
+	ALARM_IS_ERROR								=	2;							//	报警执行异常
+}
+
+/*	报警消息请求类型	*/
+enum REQUEST_TYPE_OF_ALARM_TYPE
+{
+	ALARM_TYPE_GET_ALL							=	1;							//	获取所有报警类型
+}
+
+/*	报警结果类型	*/
+enum RESULT_TYPE_OF_ALARM_TYPE
+{
+	ALARM_TYPE_RESULT_IS_OK						=	1;							//	正常
+	ALARM_TYPE_RESULT_IS_ERROR					=	2;							//	异常
+}
+
+/*	报警类型消息结构	*/
+message AlarmTypeData
+{
+	optional int64			id					=	1 	[default = -1];			//	ID					->adm_alarm_model_type->ID
+	optional int32			type				=	2	[default = -1];			//	报警类型			->adm_alarm_model_type->TYPE
+	optional bytes			describe			=	3	[default = ""];			//	报警描述			->adm_alarm_model_type->DESCRIBE
+}
+
+/*	报警类型消息	*/
+message AlarmTypeMassage
+{
+	optional int32 			requestType			=	1 	[default = -1];			//	请求类型，参考：REQUEST_TYPE_OF_ALARM_TYPE
+	optional int32			result				=	2	[default = -1];			//	结果类型，参考：RESULT_TYPE_OF_ALARM_TYPE
+	optional bytes			resultDescribe		=	3	[default = ""];			//	结果描述
+	repeated AlarmTypeData	alarmTypes			=	4;							//	报警类型
+}
+
+/*	联动类型消息请求类型	*/
+enum REQUEST_TYPE_OF_ACTION_TYPE
+{
+	ACTION_TYPE_GET_ALL							=	1;							//	获取所有联动动作类型
+}
+
+/*	报警结果类型	*/
+enum RESULT_TYPE_OF_ACTION_TYPE
+{
+	ACTION_TYPE_RESULT_IS_OK						=	1;							//	正常
+	ACTION_TYPE_RESULT_IS_ERROR					=	2;								//	异常
+}
+
+/*	报警类型消息结构	*/
+message ActionTypeData
+{
+	optional int64			id					=	1 	[default = -1];			//	ID					->adm_action_model_type->ID
+	optional int32			type				=	2	[default = -1];			//	报警类型			->adm_action_model_type->TYPE
+	optional bytes			describe			=	3	[default = ""];			//	报警描述			->adm_action_model_type->DESCRIBE
+}
+
+/*	报警类型消息	*/
+message ActionTypeMassage
+{
+	optional int32 			requestType			=	1 	[default = -1];			//	请求类型，参考：REQUEST_TYPE_OF_ACTION_TYPE
+	optional int32			result				=	2	[default = -1];			//	结果类型，参考：RESULT_TYPE_OF_ACTION_TYPE
+	optional bytes			resultDescribe		=	3	[default = ""];			//	结果描述
+	repeated ActionTypeData	actionsTypes		=	4;							//	联动动类型
+}
+/*	报警上报标志	*/
+enum FLAG_TYPE_OF_ALARM_DATA
+{
+	ALARM_DATA_ALARM_OCCURS					=	1;							//	报警发生
+	ALARM_DATA_ALARM_CANCEL					=	2;							//	报警取消
+}
+
+/*	报警数据结构	*/
+message	AlarmData
+{
+	optional string			srcDevCode			=	1	[default = ""];			//	当前报警源设备编码	->adm_dev->DEVICE_CODE
+	optional int32			srcDevChannelSeq	=	2	[default = -1];			//	当前报警源设备通道序号->adm_dev_encoder_chn->CHANNEL_SEQ          
+	optional int32			alarmType			=	3;							//	当前报警的报警类型	->adm_alarm_type->ID       
+	optional string			alarmName			=	4	[default = ""];			//	报警名称			->adm_alarm_plan_describe->name
+	optional bytes			alarmDescirbe		=	5	[default = ""];			//	报警描述			->adm_alarm_plan_describe->describe
+	optional DeviceInfo		currentAlarmDev		=	6;							//	当前报警源设备信息	
+	optional ActionLinkData	action				=	7;							//	规则所属的联动动作
+	optional int64   alarmTime                  =   8;                         //  报警上报时间
+	optional bool    isAlarmHost                =   9;                         //  是否属于报警主机
+	optional int32   AlarmFlag                  =   10;                        //  报警上报标志，参考FLAG_TYPE_OF_ALARM_DATA	
+
+	/*扬尘设备报警需要填下面的*/
+	optional string		sn				=	11	[default = ""];					//	报警源设备标识
+	repeated RaisuDustAlarm  raiseAlarms =  12;
+	message RaisuDustAlarm
+	{	
+		optional int32		alarmCap		=	1	[default = -1];					//	阀值类型，参考THRESHOLD_TYPE_OF_ALARM_FOR_RAISE_DUST
+		optional float		alarmNum		=	2	[default = -1];					//	实时报警值
+		optional int32		alarmType		=	3	[default = -1];					//	报警类型，参考ALARM_TYPE_OF_ARISE_DUST
+		optional float		standardNum		=	4	[default = -1];					//	报警阀值
+	}
+
+}
+
+/*	报警消息结构	*/
+message AlarmMassage
+{
+	optional int32			result				=	1	[default = -1];			//	结果，参考RESULT_TYPE_OF_ALARM
+	optional bytes			resultDescribe		=	2	[default = ""];			//	结果描述
+	repeated int64			userId				=	3	;						//	报警上报给客户端，客户端用户的ID	->sys_user->ID
+	optional AlarmData		alarm 				=	4;							//	报警信息
+}
+
+/*	预案状态类型	*/
+enum USING_STAT_OF_ALARM_PLAN
+{
+	ALARM_PLAN_IS_START							=	1;							//	预案启动
+	ALARM_PLAN_IS_STOP							=	0;							//	预案停止
+}
+
+/*	预案用户类型	*/
+enum USER_TYPE_OF_ALARM_PLAN
+{
+	ALARM_PLAN_WEST_IN_WEB						=	1;							//	WEB所属报警预案
+	ALARM_PLAN_WEST_IN_CS_CLIENT				=	2;							//	CS客户端所属报警预案
+}
+
+/*	报警预案数据结构	*/
+message AlarmPlanData
+{
+	optional string			id					=	1	[default = ""];			//	预案ID			->opt_alarm_plan->ID
+	repeated int64			userId				=	2	;						//	预案用户ID	
+	optional int32			userType			=	3	[default = -1];			//	预案用户类型，参考USER_TYPE_OF_ALARM_PLAN	->opt_alarm_plan->TYPE
+	optional string			name				=	4	[default = ""];			//	预案名称		->opt_alarm_plan->PLAN_NAME
+	optional TimeTemplateData timeTemplat       =	5;                          // 时间模板
+	optional int32			state				=	6	[default = -1];			//	预案状态，参考USING_STAT_OF_ALARM_PLAN ->opt_alarm_plan->state	->opt_alarm_plan->state
+	optional bytes			describe			=	7	[default = ""];			//	预案描述		->opt_alarm_plan->MEMO
+	repeated AlarmRuleData		alarms			=	8;							//	报警规则
+	repeated SoundLinkData	sounds				=	9;							//	所有的联动声音效果集合
+}
+
+/*	报警预案结果类型	*/
+enum RESULT_TYPE_OF_ALARM_PLAN
+{
+	ALARM_PLAN_IS_CONFIG_OK						=	1;							//	报警预案配置成功
+	ALARM_PLAN_IS_CONFIG_ERROR					=	2;							//	报警预案配置失败
+}
+ 
+/*	报警预案请求类型	*/
+enum REQUEST_TYPE_OF_ALARM_PLAN
+{
+	ALARM_PLAN_GET_ALL							=	1;							//	获取所有报警预案
+	ALARM_PLAN_ADD								=	2;							//	添加报警预案
+	ALARM_PLAN_UPDATE							=	3;							//	更新报警预案
+	ALARM_PLAN_DELETE							=	4;							//	删除报警预案
+	ALARM_PLAN_GET_BY_IDS						=	6;							//	根据ID列表来获取设备信息
+}
+
+/*	报警规则数据结构	*/
+message AlarmRuleData
+{
+	optional int64			ruleId				=	1	[default = -1];			//	报警规则ID			->adm_alarm_rule->ID
+	optional int64			planId				=	2 	[default = -1];			//	报警预案ID
+	repeated int64			alarmType			=	3;							//	报警类型			->adm_alarm_type->ID
+	optional string			ruleName			=	4	[default = ""];			//	规则名称			
+	optional bytes			ruleDescribe		=	5	[default = ""];			//	规则描述			
+	optional int32			state				=	7	[default = -1];			//	启用标识			->adm_alarm_rule->state
+	repeated AlarmSrcDevInfo srcDevs			=	8;							//	报警源设备
+	optional ActionLinkData	action				=	9;							//	规则所属的联动动作
+	repeated DeviceInfo		 srcDevsFromDis		=	10;							//	报警源设备[DIS]
+}
+
+/*	报警预案消息结构	*/
+message AlarmPlanMassage
+{
+	optional int32			requestType			=	1	[default = -1];			//	请求类型，参考：REQUEST_TYPE_OF_ALARM_PLAN
+	optional int32			result				=	2	[default = -1];			//	结果，参考RESULT_TYPE_OF_ALARM_PLAN
+	optional bytes			resultDescribe		=	3	[default = ""];			//	结果描述
+	repeated string			id					=	4;							//	预案ID
+	optional string			name				=	5	[default = ""];			//	预案名称
+	repeated AlarmPlanData	plan				=	6;							//	报警预案
+}
+//写入报警记录结构
+message AlarmDataForDIS
+{
+	optional	int32			result				=	1;						   //结果响应，参考RESULT_TYPE_OF_ALARM_GET_DEV
+	optional	string			srcDevCode			=	2;						   //当前报警源设备编码
+	optional	AlarmData       alarm               =   3;                         //报警数据结构
+	repeated	int64			userId				=	4;						   //预案用户ID
+	optional	bool			isToAts             =   5;                         //是否发给ATS
+	optional	bool            isWriteToDc         =   6[default =false];         //是否需要写记录到DC
+}
+
+
+//获取设备信息消息结构
+message GetAlarmDataForDIS
+{
+	optional	int32			result				=	1;							//结果响应，参考RESULT_TYPE_OF_ALARM_GET_DEV
+	optional	AlarmPlanData       alarm           =   2;							//报警预案数据结构
+	optional	bool			isNeedToSendTopic   =   3[default =false];			// 标识是否需要通知其他节点更新缓存       
+}
+/*	获取设备信息结果类型	*/
+enum RESULT_TYPE_OF_ALARM_GET_DEV
+{
+	ALARM_GET_DEV_IS_OK						=	1;							//	获取设备信息成功
+	ALARM_GET_DEV_IS_ERROR					=	2;							//	获取设备信息失败
+
+}
+
+/*	获取前端过滤报警源设备信息结果类型	*/
+enum RESULT_TYPE_OF_GET_SRCSOURCE
+{
+	ALARM_GET_SRCSOURCE_IS_OK						=	1;							//	获取前端过滤报警源设备成功
+	ALARM_GET_SRCSOURCE_IS_ERROR					=	2;							//	获取前端过滤报警源设备失败
+	ALARM_GET_SRCSOURCE_IS_NULL					    =	3;							//	获取前端过滤报警源设备为空
+}
+/*	获取前端过滤报警源设备信息请求类型	*/
+enum REQUEST_TYPE_OF_ALARM_GET_SRCSOURCE
+{
+	ALARM_SRCSOURCE_ALL							=	1;							//	所有需过滤的报警源设备
+	ALARM_SRCSOURCE_ADD							=	2;							//	添加需过滤的报警源设备
+	ALARM_SRCSOURCE_DELETE						=	3;							//	删除需过滤的报警源设备
+	ALARM_SRCSOURCE_GET_BY_BOXCODE				=	4;							//	根据box获取设备信息
+}
+/*	获取前端过滤报警源设备信息消息结构	*/
+message AlarmGetSrcsourceMassage
+{
+	optional int32			requestType			=	1	[default = -1];			//	请求类型，参考：REQUEST_TYPE_OF_ALARM_GET_SRCSOURCE
+	optional int32			result				=	2	[default = -1];			//	结果，参考RESULT_TYPE_OF_GET_SRCSOURCE
+	optional string			resultDescribe		=	3	[default = ""];			//	结果描述
+	optional string			cascadeDevDomain	=   4	[default = ""];			//	级联上级设备的设备域编码
+	repeated DeviceInfo		GpsDev				=	5;						    //  GPS源设备信息
+	repeated DeviceInfo		GrepDev				=	6;						    //  联动抓图源设备信息
+}
+
+/****************************************************************************************************************************************************/
+/*	记录请求类型	*/
+enum REQUEST_TYPE_OF_ALARM_RECORD
+{
+	ALARM_RECORD_REQUEST_ALL				=	1;							//	获取所有
+}
+
+/*	报警记录	*/
+message AlarmRecordData
+{
+	optional int64		id					=	1 	[default = -1];			//	记录ID
+	optional string		devCode				=	2	[default = ""];			//	报警设备
+	optional int32		unitType			=	3	[default = -1];			//	
+	optional int32		unitSeq				=	4	[default = -1];			//	
+	optional int32		chnSeq				=	5	[default = -1];			//	通道序号
+	optional string		chnName				=	6	[default = ""];			//	通道名称
+	optional int32		alarmType			=	7	[default = -1];			//	报警类型
+	optional int64		alarmDate			=	8	[default = -1];			//	报警时间
+	optional int32		alarmGrade			=	9	[default = -1];			//	报警等级
+	optional string		handleUser			=	10 	[default = ""];			//	处理人
+	optional int64		handleDate			=	11	[default = -1];			//	处理日期
+	optional bytes		handleMsg			=	12	[default = ""];			//	处理内容
+	optional int32		handleStat			=	13	[default = -1];			//	处理状态
+	optional string		devName				=	14	[default = ""];			//	设备名称
+	optional int32		alarmStat			=	15	[default = -1];			//	报警状态，参考 FLAG_TYPE_OF_ALARM_DATA
+	repeated LinkVideoData	videos			=	16;							//	联动录像信息
+	repeated RaiseAlarmData raises			=	17;							//	扬尘报警
+	/*	报警联动录像信息	*/
+	message LinkVideoData
+	{
+		optional int64	id					=	1	[default = -1];			//	ID 
+		optional int64	alarmId				=	2	[default = -1];			//	报警记录ID
+		optional string	filePath			=	3	[default = ""];			//	文件目录
+		optional string channelCode			=	4	[default = ""];			//	取流编号，如：1000014$3$0$0
+	}
+	/*	扬尘报警信息	*/
+	message RaiseAlarmData
+	{
+		optional int64 id					=	1	[default = -1];			//	ID
+		optional int64 alarmId				=	2	[default = -1];			//	报警记录ID
+		optional int32 alarmCap				=	3	[default = -1];			//	阀值类型，参考：RaiseDustDataBean.proto->THRESHOLD_TYPE_OF_ALARM_FOR_RAISE_DUST
+		optional float alarmNum				=	4	[default = 0.0];		//	报警值
+		optional int32 alarmGroup			=	5	[default = -1];			//	报警数据类型，参考：RaiseDustDataBean.proto->ALARM_TYPE_OF_ARISE_DUST
+		optional float standardNum			=	6	[default = 0.0];		//	报警阀值
+	}
+}
+
+/*	获取报警记录	*/
+message AlarmRecordMessage
+{
+	optional int32			requestType			=	1	[default = -1];			//	请求类型，参考：REQUEST_TYPE_OF_ALARM_PLAN
+	optional int32			result				=	2	[default = -1];			//	结果，参考RESULT_TYPE_OF_ALARM_PLAN
+	optional bytes			resultDescribe		=	3	[default = ""];			//	结果描述
+	repeated AlarmRecordData	datas			=	4;							//	结果集
+	optional int64			startTime			=	5	[default = -1];			//	开始时间
+	optional int64			endTime				=	6	[default = -1];			//	结束时间
+	repeated AlarmParam		params				=	7;							//	报警参数
+	optional string			nginxConf			=	8	[default = ""];			//	nginx内网配置，示例：127.0.0.1:21
+	optional string			nginxOut			=	9	[default = ""];			//	nginx外网配置	//	报警参数
+
+	message AlarmParam
+	{
+		optional int64		alarmType			=	1	[default = -1];			//	报警类型
+		optional string		devCode				=	2	[default = ""];			//	报警设备
+		optional int32		chnSeq				=	3	[default = 0];			//	通道序号
+		optional int32		limit				=	4	[default = 0];			//	最大数量
+	}
+}
+

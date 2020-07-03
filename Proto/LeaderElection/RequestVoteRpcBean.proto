@@ -1,0 +1,7 @@
+package com.arges.file.proto;    
+
+message RequestVoteRpc{
+	optional string  		term 	= 1		[default = ""];  			//	
+	optional string  		srcIdentifier 	= 2		[default = ""];  			//	
+	
+} 

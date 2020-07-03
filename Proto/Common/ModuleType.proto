@@ -1,0 +1,54 @@
+package com.arges.file.proto;  
+
+enum MODULE_TYPE 
+{
+	/*	web服务	*/
+	WEB_C_SERVER					=	100;		//	
+	WEB_N_SERVER					=	101;
+	WEB_F_SERVER					=	102;		//	
+	WEB_B_SERVER                    =   103;
+	WEB_N_SERVER_VALUE				=	104;
+	/*	C++服务	*/
+	C_TMS_SERVER					=	5;			//	tms服务
+	C_ETS_SERVER					=	201;		//	ets服务
+	C_DC_SERVER						=	202;		//	数据中心服务
+	C_DIS_SERVER					=	203;		//	dis服务
+	C_DISCOVEYPROXY_SERVER			=	204;		//	代理发现服务
+	C_DPX_SERVER					=	25;			//	dpx服务
+	C_VSQUARE_SERVER				=	206;		//	视频广场服务
+	C_SIS_SERVER					=	207;		//	平台管理服
+	C_CMS_SERVER					=	208;		//	cms服务
+	C_CSD_DC_SERVER					=	209;		//	cassandra版本的数据中心服务
+	C_CONSUL_SERVER					=	210;		//	Consul服务
+	C_CLIENT_SERVER					=	211;		//	客户端服务
+	C_BMS_SERVER                    =   212;        //  bms服务
+	C_BPX_SERVER                    =   213;        //  bpx服务
+	C_VMS_SERVER					=	3;			//	VMS服务
+	C_KEYPX_SERVER					=	215;		//	键盘代理服务
+	C_CASPROXY_SERVER				=	216;		//	CAS代理服务
+	C_DMS_SERVER					=	2;			//	DMS服务
+	C_CSPX_SERVER					=	218;		//	用户代理，命令网关服务
+	C_DRPX_SERVER					=	6;			//	
+	C_ATP_SERVER					=	21;			//	
+	C_ATS_SERVER					=	16;			//	
+	C_TPX_SERVER					=	8;			//	
+    C_MTU_SERVER                    =   219;        //  mtu服务
+    C_CLS_SERVER                    =   220;        //  Catalog服务
+	///////////////////////////////////////////////////////
+	C_AML_SERVER					=	17;			//	
+	C_VSS_SERVER					=	1;			//	存储服务
+	C_MTS_SERVER					=	0;			//	媒体转发服务
+	C_ALKG_SERVER					=	19;			//	
+	C_AWALL_SERVER					=	23;			//	电视墙服务
+	C_AMS_SERVER					=	18;			//	
+	C_SCS_SERVER					=	32;			//
+	C_MGW_SERVER					=	27;			//
+	C_APL_SERVER					=	15;			//
+	C_ACTION_SERVER					=	229;		//	联动服务
+	C_BDATA							=	230;		//手环数据上报模块	
+	C_FACECALL_SERVER				=	231;		//	人脸
+	C_IOT							=	241;		// IoT服务
+	
+	/*	客户端*/
+	C_CS_CLIENT						=	300;		//	CS客户端
+}

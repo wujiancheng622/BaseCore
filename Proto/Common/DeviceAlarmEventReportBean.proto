@@ -1,0 +1,9 @@
+package com.arges.file.proto;    
+
+message DeviceAlarmEventReport {
+    optional string		deviceid	= 1		[default = "default"];	//  设备的id号
+    optional int32		channel		= 2		[default = -1];	//	设备的通道号
+    optional int32		alarmtype	= 3		[default = -1];	//	报警类型
+    optional int64  	alarmTime 	= 4		[default = -1];         //报警产生的时间
+    optional int32		alarmStaus 	= 5		[default = -1];			//	报警产生还是消失
+} 

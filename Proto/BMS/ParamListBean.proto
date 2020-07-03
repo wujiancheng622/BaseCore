@@ -1,0 +1,8 @@
+package com.arges.file.proto;
+//web发送业务信息
+message ParamList
+{
+	repeated string strId   =  1;   //字符串主键id
+	repeated int64  LongId  =  2;   //long型主键id
+	repeated int32  intId   =  3;   //int型主键id
+}

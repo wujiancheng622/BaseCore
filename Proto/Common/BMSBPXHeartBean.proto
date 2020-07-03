@@ -1,0 +1,12 @@
+package com.arges.file.proto;    
+
+message BMSToBPXHeart {
+    optional string		id	= 6		[default = "default"];			//	bms id
+} 
+
+
+message BPXToBMSHeart {
+    optional string		id	= 6		[default = "default"];			//	bpx id
+} 
+
+

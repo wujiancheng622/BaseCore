@@ -1,0 +1,13 @@
+package com.arges.file.proto;    
+
+message ReqGetLeaderAddress {
+	optional string  		identifier 	= 1		[default = ""];  			//BPX的唯一标识符
+} 
+
+message RspGetLeaderAddress {
+	required string			leaderip	= 1		[default = ""];				//Leader的IP
+	required int32			leaderport	= 2		[default = -1];				//Leader的端口
+	optional string  		bpxid 		= 3		[default = ""];  			//BPX的唯一标识符
+	optional string  		leaderid  	= 4		[default = ""];  			//Leader的唯一标识符
+} 
+
