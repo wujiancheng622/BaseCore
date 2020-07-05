@@ -1,6 +1,4 @@
 #include <cstdio>
-#include <boost/thread.hpp>
-#include <boost/thread/lock_factories.hpp>
 #include "./ThreadCoreBase.h"
 
 using namespace boost;
@@ -45,7 +43,7 @@ int main()
 		printf("in main \n");
 
 		//ThreadCoreBase::Sleep(2000);    // 这种更好用 
-		usleep(1000 *1000);
+		ThreadCoreBase::Sleep(1000);
 
         /*
 		if (i==2)
